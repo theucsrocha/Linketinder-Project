@@ -2,6 +2,7 @@ package com.theucsrocha.entities
 
 @groovy.transform.TupleConstructor
 class Candidato implements IPessoa{
+    List<Empresa> empresasCurtidas = []
     List<String> competencias
     @Override
     String toString() {
@@ -17,6 +18,10 @@ class Candidato implements IPessoa{
 🛠 Competências: ${competencias?.join(", ")}
 ----------------------------------------
 """
+    }
+
+    void curtirEmpresa(Empresa empresa){
+        this.empresasCurtidas.add(empresa)
     }
 
 }

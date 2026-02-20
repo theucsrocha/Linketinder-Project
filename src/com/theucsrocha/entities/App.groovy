@@ -110,12 +110,15 @@ class App {
         def opcao = 0
         println("Seja bem vindo ao LinkerTinder!")
 
-        while(opcao!=4){
+        while(opcao!=7){
         println("Opções:")
         println("1 - Listar todos os candidatos")
         println("2 - Listar todas as empresas")
-        println("3 - Listar todos os Matches <3")
-        println("4 - Sair")
+        println("3 - Listar todos as compatibilidades")
+        println("4 - Realizar curtida como candidato")
+        println("5 - Realizar curtida como empresa")
+        println("6 - Listar todos os matches <3")
+        println("7 - Sair")
         print("Digite sua opção:")
         opcao = System.in.newReader().readLine().toInteger()
 
@@ -140,6 +143,46 @@ class App {
                 break
             }
             case 4:{
+                println("Digite o cpf do Canditato:")
+                def cpf = System.in.newReader().readLine()
+                Candidato candidato = candidatos.find {it.getCpf() == cpf}
+                if (candidato == null){
+                    println("Candidato não encontrado no registro")
+                    break
+                }
+                println("Digite o cnpj da empresa:")
+                def cnpj = System.in.newReader().readLine()
+                Empresa empresa = empresas.find {it.getCnpj()== cnpj}
+                if (empresa == null){
+                    println("Empresa não encontrada no registro")
+                    break
+                }
+                candidato.curtirEmpresa(empresa)
+                break
+            }
+            case 5:{
+                println("Digite o cpf da Empresa:")
+                def cnpj = System.in.newReader().readLine()
+                Empresa empresa = empresas.find {it.getCnpj() == cnpj}
+                if (empresa == null){
+                    println("Empresa não encontrada no registro")
+                    break
+                }
+                println("Digite o cpf da Candidato:")
+                def cpf = System.in.newReader().readLine()
+                Candidato candidato = candidatos.find {it.getCpf()== cpf}
+                if (candidato == null){
+                    println("Candidato não encontrado no registro")
+                    break
+                }
+                empresa.curtirCandidato(candidato)
+                break
+            }
+            case 6:{
+                Sistema.listarMatches(empresas,candidatos)
+                break
+            }
+            case 7:{
                 println("Saindo...")
                 break
             }

@@ -16,4 +16,21 @@ Matheus Rocha
 ### Terminal
 Dentro da pasta do projeto:
 
-Execute esse comando: groovy src/com/theucsrocha/entities/App.groovy
+Execute esse comando:
+```bash
+groovy src/com/theucsrocha/entities/App.groovy
+```
+
+❤️ Nova Feature: Sistema de Curtidas e Match
+
+Foi implementado o sistema de curtidas no Linketinder.
+
+Agora:
+
+Um candidato pode curtir uma empresa.
+
+Uma empresa pode curtir um candidato.
+
+Quando ambos se curtem, ocorre um Match.
+
+O Match indica que há interesse mútuo entre as duas partes, permitindo que avancem no processo.

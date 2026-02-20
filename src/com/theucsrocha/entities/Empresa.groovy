@@ -10,6 +10,7 @@ class Empresa {
     String descricao
     String cep
     List<String> exigencias;
+    List<Candidato> candidatoesCurtidos = []
 
     @Override
     String toString() {
@@ -25,5 +26,9 @@ class Empresa {
 💼 Exigências: ${exigencias.join(", ")}
 ----------------------------------------
 """
+    }
+
+    void curtirCandidato(Candidato candidato){
+        this.candidatoesCurtidos.add(candidato)
     }
 }
