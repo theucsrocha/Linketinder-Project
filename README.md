@@ -34,3 +34,5 @@ Uma empresa pode curtir um candidato.
 Quando ambos se curtem, ocorre um Match.
 
 O Match indica que há interesse mútuo entre as duas partes, permitindo que avancem no processo.
+
+Nova Feature: Adicionado a função de adicionar um novo candidato e empresa, acompanhado por testes unitatios do Spock.

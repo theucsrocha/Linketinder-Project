@@ -2,197 +2,129 @@ package com.theucsrocha.entities
 
 class App {
     static void main(String[] args) {
-        def empresas = [
-                new Empresa(
-                        "Tech Solutions",
-                        "contato@techsolutions.com",
-                        "12.345.678/0001-90",
-                        "Brasil",
-                        "SP",
-                        "Empresa focada em backend Java.",
-                        "01000-000",
-                        ["Java", "Spring"]
-                ),
-                new Empresa(
-                        "DataCorp",
-                        "rh@datacorp.com",
-                        "22.333.444/0001-55",
-                        "Brasil",
-                        "MG",
-                        "Empresa especializada em dados.",
-                        "30000-000",
-                        ["Python", "SQL"]
-                ),
-                new Empresa(
-                        "CloudSys",
-                        "jobs@cloudsys.com",
-                        "55.666.777/0001-88",
-                        "Brasil",
-                        "RS",
-                        "Infraestrutura cloud.",
-                        "90000-000",
-                        ["Docker", "AWS"]
-                ),
-                new Empresa(
-                        "FrontDev",
-                        "talentos@frontdev.com",
-                        "66.777.888/0001-99",
-                        "Brasil",
-                        "RJ",
-                        "Frontend moderno.",
-                        "20000-000",
-                        ["Angular", "TypeScript"]
-                ),
-                new Empresa(
-                        "FullStack Solutions",
-                        "carreiras@fullstack.com",
-                        "99.888.777/0001-22",
-                        "Brasil",
-                        "BA",
-                        "Projetos fullstack.",
-                        "40000-000",
-                        ["Java", "Angular", "Spring"]
-                )
-        ]
-
-        def candidatos = [
-                new Candidato(
-                        nome: "Matheus Rocha",
-                        email: "matheus@email.com",
-                        cpf: "123.456.789-00",
-                        idade: 20,
-                        estado: "BA",
-                        cep: "40000-000",
-                        descricaoPessoal: "Backend developer.",
-                        competencias: ["Java", "Spring", "SQL"]
-                ),
-                new Candidato(
-                        nome: "Ana Souza",
-                        email: "ana@email.com",
-                        cpf: "987.654.321-00",
-                        idade: 25,
-                        estado: "SP",
-                        cep: "01000-000",
-                        descricaoPessoal: "Especialista frontend.",
-                        competencias: ["Angular", "TypeScript", "HTML"]
-                ),
-                new Candidato(
-                        nome: "Carlos Lima",
-                        email: "carlos@email.com",
-                        cpf: "111.222.333-44",
-                        idade: 30,
-                        estado: "MG",
-                        cep: "30000-000",
-                        descricaoPessoal: "Engenheiro de dados.",
-                        competencias: ["Python", "SQL", "Machine Learning"]
-                ),
-                new Candidato(
-                        nome: "Fernanda Alves",
-                        email: "fernanda@email.com",
-                        cpf: "555.666.777-88",
-                        idade: 28,
-                        estado: "RS",
-                        cep: "90000-000",
-                        descricaoPessoal: "Cloud engineer.",
-                        competencias: ["Docker", "AWS", "Kubernetes"]
-                ),
-                new Candidato(
-                        nome: "Lucas Mendes",
-                        email: "lucas@email.com",
-                        cpf: "999.888.777-66",
-                        idade: 22,
-                        estado: "BA",
-                        cep: "40000-000",
-                        descricaoPessoal: "Fullstack developer.",
-                        competencias: ["Java", "Angular", "Spring", "SQL"]
-                )
-        ]
+        Sistema sistema = new Sistema()
         def opcao = 0
+        def leitor = System.in.newReader()
+
         println("Seja bem vindo ao LinkerTinder!")
 
-        while(opcao!=7){
-        println("Opções:")
-        println("1 - Listar todos os candidatos")
-        println("2 - Listar todas as empresas")
-        println("3 - Listar todos as compatibilidades")
-        println("4 - Realizar curtida como candidato")
-        println("5 - Realizar curtida como empresa")
-        println("6 - Listar todos os matches <3")
-        println("7 - Sair")
-        print("Digite sua opção:")
-        opcao = System.in.newReader().readLine().toInteger()
+        while(opcao != 9){
+            println("\n--- Opções ---")
+            println("1 - Listar todos os candidatos")
+            println("2 - Listar todas as empresas")
+            println("3 - Listar todos as compatibilidades")
+            println("4 - Realizar curtida como candidato")
+            println("5 - Realizar curtida como empresa")
+            println("6 - Listar todos os matches <3")
+            println("7 - Adicionar novo Candidato")
+            println("8 - Adicionar nova Empresa")
+            println("9 - Sair")
+            print("Digite sua opção:")
 
-        switch (opcao){
-            case 1: {
-                candidatos.each { println(it) }
-                break
+            def entrada = leitor.readLine()
+            if (!entrada?.isInteger()) {
+                println("Opção inválida! Digite um número.")
+                continue
             }
-            case 2:{
-                empresas.each {println(it)}
-                break
-            }
-            case 3:{
-                empresas.each {
-                    println("Candidatos compativeis com a empresa ${it.getNome()}:")
-                    for(Candidato c in candidatos) {
-                        if (Sistema.verificadorDeCompatibilidade(it,c)){
-                            println(c.getNome())
+            opcao = entrada.toInteger()
+
+            switch (opcao){
+                case 1:
+                    sistema.candidatos.each { println(it) }
+                    break
+
+                case 2:
+                    sistema.empresas.each { println(it) }
+                    break
+
+                case 3:
+                    sistema.empresas.each { empresa ->
+                        println("Candidatos compativeis com a empresa ${empresa.getNome()}:")
+                        sistema.candidatos.each { candidato ->
+                            if (sistema.verificadorDeCompatibilidade(empresa, candidato)) {
+                                println(candidato.getNome())
+                            }
                         }
                     }
-                }
-                break
-            }
-            case 4:{
-                println("Digite o cpf do Canditato:")
-                def cpf = System.in.newReader().readLine()
-                Candidato candidato = candidatos.find {it.getCpf() == cpf}
-                if (candidato == null){
-                    println("Candidato não encontrado no registro")
                     break
-                }
-                println("Digite o cnpj da empresa:")
-                def cnpj = System.in.newReader().readLine()
-                Empresa empresa = empresas.find {it.getCnpj()== cnpj}
-                if (empresa == null){
-                    println("Empresa não encontrada no registro")
-                    break
-                }
-                candidato.curtirEmpresa(empresa)
-                break
-            }
-            case 5:{
-                println("Digite o cpf da Empresa:")
-                def cnpj = System.in.newReader().readLine()
-                Empresa empresa = empresas.find {it.getCnpj() == cnpj}
-                if (empresa == null){
-                    println("Empresa não encontrada no registro")
-                    break
-                }
-                println("Digite o cpf da Candidato:")
-                def cpf = System.in.newReader().readLine()
-                Candidato candidato = candidatos.find {it.getCpf()== cpf}
-                if (candidato == null){
-                    println("Candidato não encontrado no registro")
-                    break
-                }
-                empresa.curtirCandidato(candidato)
-                break
-            }
-            case 6:{
-                Sistema.listarMatches(empresas,candidatos)
-                break
-            }
-            case 7:{
-                println("Saindo...")
-                break
-            }
-            default:{
-                println("Opcao invalida")
-                break
-            }
 
+                case 4:
+                    println("Digite o cpf do Canditato:")
+                    def cpf = leitor.readLine()
+                    Candidato candidato = sistema.candidatos.find { it.getCpf() == cpf }
+                    if (candidato == null) { println("Candidato não encontrado"); break }
+
+                    println("Digite o cnpj da empresa:")
+                    def cnpj = leitor.readLine()
+                    Empresa empresa = sistema.empresas.find { it.getCnpj() == cnpj }
+                    if (empresa == null) { println("Empresa não encontrada"); break }
+
+                    candidato.curtirEmpresa(empresa)
+                    println("Curtida registrada!")
+                    break
+
+                case 5:
+                    println("Digite o cnpj da Empresa:")
+                    def cnpjEmp = leitor.readLine()
+                    Empresa empresaEmp = sistema.empresas.find { it.getCnpj() == cnpjEmp }
+                    if (empresaEmp == null) { println("Empresa não encontrada"); break }
+
+                    println("Digite o cpf do Candidato:")
+                    def cpfCand = leitor.readLine()
+                    Candidato candidatoCand = sistema.candidatos.find { it.getCpf() == cpfCand }
+                    if (candidatoCand == null) { println("Candidato não encontrado"); break }
+
+                    empresaEmp.curtirCandidato(candidatoCand)
+                    println("Curtida registrada!")
+                    break
+
+                case 6:
+                    sistema.listarMatches(sistema.empresas, sistema.candidatos)
+                    break
+
+                case 7:
+                    println("\n--- Cadastro de Candidato ---")
+                    print("Nome: "); def n = leitor.readLine()
+                    print("Email: "); def e = leitor.readLine()
+                    print("CPF: "); def c = leitor.readLine()
+                    print("Idade: "); def i = leitor.readLine().toInteger()
+                    print("Competências (separe por vírgula): ")
+                    def comps = leitor.readLine().split(",").collect { it.trim() }
+
+                    try {
+                        def novoC = new Candidato(nome: n, email: e, cpf: c, idade: i, competencias: comps)
+                        sistema.adicionarCandidato(novoC)
+                        println("Candidato adicionado com sucesso!")
+                    } catch (IllegalArgumentException ex) {
+                        println("Erro ao adicionar: ${ex.message}")
+                    }
+                    break
+
+                case 8:
+                    println("\n--- Cadastro de Empresa ---")
+                    print("Nome: "); def ne = leitor.readLine()
+                    print("Email: "); def ee = leitor.readLine()
+                    print("CNPJ: "); def cj = leitor.readLine()
+                    print("Exigências (separe por vírgula): ")
+                    def exig = leitor.readLine().split(",").collect { it.trim() }
+
+                    try {
+                        def novaE = new Empresa(nome: ne, email: ee, cnpj: cj, exigencias: exig, pais: "Brasil", estado: "BA", descricao: "Empresa cadastrada via App", cep: "00000-000")
+                        sistema.adicionarEmpresa(novaE)
+                        println("Empresa adicionada com sucesso!")
+                    } catch (IllegalArgumentException ex) {
+                        println("Erro ao adicionar: ${ex.message}")
+                    }
+                    break
+
+                case 9:
+                    println("Saindo...")
+                    break
+
+                default:
+                    println("Opcao invalida")
+                    break
+            }
         }
-    }}
-
-
+    }
 }
