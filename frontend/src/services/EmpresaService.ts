@@ -1,6 +1,6 @@
-import { Candidato } from "../models/Candidato";
-import { Empresa } from "../models/Empresa";
-import { Vaga } from "../models/Vaga";
+ import { Candidato } from "../models/Candidato.js";
+import { Empresa } from "../models/Empresa.js";
+import { Vaga } from "../models/Vaga.js";
 
 export class EmpresaService{
     empresasCadastradas:Array<Empresa> = []

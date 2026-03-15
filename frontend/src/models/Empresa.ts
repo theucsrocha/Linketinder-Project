@@ -1,5 +1,5 @@
-import { Vaga } from "./Vaga"
-import { Candidato } from "./Candidato"
+import { Vaga } from "./Vaga.js"
+import { Candidato } from "./Candidato.js"
 
 
 export class Empresa{

@@ -1,4 +1,4 @@
-import { Vaga } from "./Vaga"
+import { Vaga } from "./Vaga.js"
 
 export class Candidato{
     nome:string
@@ -23,4 +23,8 @@ export class Candidato{
 
 
     }
+
+    getCompetenciasComoString(): string {
+  return this.competencias.join(", ")
+}
 }

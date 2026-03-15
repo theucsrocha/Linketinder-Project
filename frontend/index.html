@@ -1,14 +1,261 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Linketinder</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  
-    
 
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">Linke<span>tinder</span></h1>
+            <nav class="nav-tabs" id="nav-tabs">
+                <button class="nav-btn active" data-tab="tab-cadastrar-empresa">Cadastrar Empresa</button>
+                <button class="nav-btn" data-tab="tab-cadastrar-candidato">Cadastrar Candidato</button>
+                <button class="nav-btn" data-tab="tab-vagas">Vagas</button>
+                <button class="nav-btn" data-tab="tab-candidatos">Candidatos</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <!-- ===== TAB: CADASTRAR EMPRESA ===== -->
+        <section id="tab-cadastrar-empresa" class="tab-section active">
+            <div class="form-container">
+                <h2 class="section-title">Cadastrar Empresa</h2>
+                <form id="form-empresa" novalidate>
+                    <div class="form-group">
+                        <label for="empresa-nome">Nome da Empresa</label>
+                        <input type="text" id="empresa-nome" name="empresa-nome" placeholder="Ex: Tech Corp" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empresa-email">E-mail</label>
+                        <input type="email" id="empresa-email" name="empresa-email" placeholder="contato@empresa.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empresa-cnpj">CNPJ</label>
+                        <input type="text" id="empresa-cnpj" name="empresa-cnpj" placeholder="00.000.000/0000-00" maxlength="18" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="empresa-estado">Estado</label>
+                            <select id="empresa-estado" name="empresa-estado" required>
+                                <option value="">Selecione...</option>
+                                <option value="AC">AC</option><option value="AL">AL</option>
+                                <option value="AM">AM</option><option value="AP">AP</option>
+                                <option value="BA">BA</option><option value="CE">CE</option>
+                                <option value="DF">DF</option><option value="ES">ES</option>
+                                <option value="GO">GO</option><option value="MA">MA</option>
+                                <option value="MG">MG</option><option value="MS">MS</option>
+                                <option value="MT">MT</option><option value="PA">PA</option>
+                                <option value="PB">PB</option><option value="PE">PE</option>
+                                <option value="PI">PI</option><option value="PR">PR</option>
+                                <option value="RJ">RJ</option><option value="RN">RN</option>
+                                <option value="RO">RO</option><option value="RR">RR</option>
+                                <option value="RS">RS</option><option value="SC">SC</option>
+                                <option value="SE">SE</option><option value="SP">SP</option>
+                                <option value="TO">TO</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="empresa-cep">CEP</label>
+                            <input type="text" id="empresa-cep" name="empresa-cep" placeholder="00000-000" maxlength="9" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="empresa-descricao">Descrição</label>
+                        <textarea id="empresa-descricao" name="empresa-descricao" placeholder="Fale sobre a empresa..." rows="4" required></textarea>
+                    </div>
+                        <button type="button" id="btn-cadastrar-empresa" class="btn btn-primary">Cadastrar Empresa</button>                </form>
+            </div>
+        </section>
+
+        <!-- ===== TAB: CADASTRAR CANDIDATO ===== -->
+        <section id="tab-cadastrar-candidato" class="tab-section">
+            <div class="form-container">
+                <h2 class="section-title">Cadastrar Candidato</h2>
+                <form id="form-candidato" novalidate>
+                    <div class="form-group">
+                        <label for="candidato-nome">Nome Completo</label>
+                        <input type="text" id="candidato-nome" name="candidato-nome" placeholder="Ex: João Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="candidato-email">E-mail</label>
+                        <input type="email" id="candidato-email" name="candidato-email" placeholder="joao@email.com" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="candidato-cpf">CPF</label>
+                            <input type="text" id="candidato-cpf" name="candidato-cpf" placeholder="000.000.000-00" maxlength="14" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="candidato-idade">Idade</label>
+                            <input type="number" id="candidato-idade" name="candidato-idade" placeholder="Ex: 25" min="16" max="99" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="candidato-estado">Estado</label>
+                            <select id="candidato-estado" name="candidato-estado" required>
+                                <option value="">Selecione...</option>
+                                <option value="AC">AC</option><option value="AL">AL</option>
+                                <option value="AM">AM</option><option value="AP">AP</option>
+                                <option value="BA">BA</option><option value="CE">CE</option>
+                                <option value="DF">DF</option><option value="ES">ES</option>
+                                <option value="GO">GO</option><option value="MA">MA</option>
+                                <option value="MG">MG</option><option value="MS">MS</option>
+                                <option value="MT">MT</option><option value="PA">PA</option>
+                                <option value="PB">PB</option><option value="PE">PE</option>
+                                <option value="PI">PI</option><option value="PR">PR</option>
+                                <option value="RJ">RJ</option><option value="RN">RN</option>
+                                <option value="RO">RO</option><option value="RR">RR</option>
+                                <option value="RS">RS</option><option value="SC">SC</option>
+                                <option value="SE">SE</option><option value="SP">SP</option>
+                                <option value="TO">TO</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="candidato-cep">CEP</label>
+                            <input type="text" id="candidato-cep" name="candidato-cep" placeholder="00000-000" maxlength="9" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="candidato-descricao">Descrição / Sobre mim</label>
+                        <textarea id="candidato-descricao" name="candidato-descricao" placeholder="Fale sobre você, sua experiência..." rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Competências</label>
+                        <div class="competencias-input-row">
+                            <input type="text" id="candidato-competencias-input" placeholder="Ex: Java, Python...">
+                            <button type="button" id="btn-add-competencia-candidato" class="btn btn-secondary">Adicionar</button>
+                        </div>
+                        <div id="candidato-competencias-list" class="tags-container"></div>
+                    </div>
+                    <button type="button" id="btn-cadastrar-candidato" class="btn btn-primary">Cadastrar Candidato</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ===== TAB: VAGAS ===== -->
+        <section id="tab-vagas" class="tab-section">
+            <div class="list-container">
+                <div class="list-header">
+                    <h2 class="section-title">Vagas Disponíveis</h2>
+                    <button id="btn-abrir-modal-vaga" class="btn btn-primary">+ Criar Vaga</button>
+                </div>
+                <div id="lista-vagas" class="cards-grid">
+                    <table id="tabela-vagas" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cargo</th>
+                                <th>Descrição</th>
+                                <th>Competências</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-vagas-body">
+                            <tr class="empty-row"><td colspan="4">Nenhuma vaga cadastrada ainda.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TAB: CANDIDATOS ===== -->
+        <section id="tab-candidatos" class="tab-section">
+            <div class="list-container">
+                <div class="list-header">
+                    <h2 class="section-title">Candidatos</h2>
+                </div>
+                <div id="lista-candidatos" style="overflow-x: auto;"> 
+                    <table id="tabela-candidatos" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Idade</th>
+                                <th>Estado</th>
+                                <th>Descrição</th>
+                                <th>Competências</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-candidatos-body">
+                            <tr class="empty-row"><td colspan="8">Nenhum candidato cadastrado ainda.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">Candidatos por Competência</h3>
+                    <canvas id="grafico-competencias"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== MODAL: CRIAR VAGA ===== -->
+    <div id="modal-criar-vaga" class="modal-overlay" aria-hidden="true">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Nova Vaga</h3>
+                <button id="btn-fechar-modal-vaga" class="btn-close" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="form-criar-vaga" novalidate>
+                <div class="form-group">
+                    <label for="vaga-empresa-select">Empresa</label>
+                    <select id="vaga-empresa-select" name="vaga-empresa-select" required>
+                        <option value="">Selecione uma empresa...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vaga-cargo">Cargo</label>
+                    <input type="text" id="vaga-cargo" name="vaga-cargo" placeholder="Ex: Desenvolvedor Backend" required>
+                </div>
+                <div class="form-group">
+                    <label for="vaga-descricao">Descrição da Vaga</label>
+                    <textarea id="vaga-descricao" name="vaga-descricao" placeholder="Descreva as responsabilidades e requisitos..." rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Competências Necessárias</label>
+                    <div class="competencias-input-row">
+                        <input type="text" id="vaga-competencias-input" placeholder="Ex: Java, Docker...">
+                        
+                    <div id="vaga-competencias-list" class="tags-container"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="btn-fechar-modal-vaga-cancel" class="btn btn-outline">Cancelar</button>
+                    <button type="submit" id="btn-criar-vaga" class="btn btn-primary">Criar Vaga</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== MODAL: CURTIR CANDIDATO ===== -->
+    <div id="modal-curtir" class="modal-overlay" aria-hidden="true">
+        <div class="modal-box modal-box--small">
+            <div class="modal-header">
+                <h3>Curtir Candidato</h3>
+                <button id="btn-fechar-modal-curtir" class="btn-close" aria-label="Fechar">&times;</button>
+            </div>
+            <p class="modal-subtitle">Selecione com qual empresa deseja curtir este candidato:</p>
+            <div class="form-group">
+                <label for="curtir-empresa-select">Empresa</label>
+                <select id="curtir-empresa-select" name="curtir-empresa-select" required>
+                    <option value="">Selecione uma empresa...</option>
+                </select>
+            </div>
+            <input type="hidden" id="curtir-candidato-index">
+            <div class="modal-actions">
+                <button type="button" id="btn-fechar-modal-curtir-cancel" class="btn btn-outline">Cancelar</button>
+                <button type="button" id="btn-confirmar-curtir" class="btn btn-accent">Curtir ❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="./dist/app.js"></script>
 </body>
 </html>

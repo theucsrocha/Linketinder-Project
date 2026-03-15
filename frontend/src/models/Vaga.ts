@@ -1,5 +1,5 @@
-import { Empresa } from "./Empresa"
-import { Candidato } from "./Candidato"
+import { Empresa } from "./Empresa.js"
+import { Candidato } from "./Candidato.js"
 export class Vaga{
     id:number = 0
     cargo:string

@@ -1,5 +1,5 @@
-import { Candidato } from "../models/Candidato";
-import { Vaga } from "../models/Vaga";
+import { Candidato } from "../models/Candidato.js";
+import { Vaga } from "../models/Vaga.js";
 
 export class CandidatoService{
     candidatosCadastrados:Array<Candidato> = []
