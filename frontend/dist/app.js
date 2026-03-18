@@ -107,13 +107,16 @@ if (btnCadastrar) {
         (_a = e.preventDefault) === null || _a === void 0 ? void 0 : _a.call(e);
         const nome = document.getElementById("candidato-nome").value;
         const email = document.getElementById("candidato-email").value;
+        const linkedin = document.getElementById("candidato-linkedin").value;
+        const telefone = document.getElementById("candidato-telefone").value;
         const cpf = document.getElementById("candidato-cpf").value;
         const idade = parseInt(document.getElementById("candidato-idade").value);
         const estado = document.getElementById("candidato-estado").value;
         const cep = document.getElementById("candidato-cep").value;
         const descricao = document.getElementById("candidato-descricao").value;
         const competencias = competenciasUsuarioCadastroAtual.slice();
-        if (candidatoService.cadastrarCandidato(nome, email, cpf, estado, descricao, cep, competencias, idade)) {
+        try {
+            candidatoService.cadastrarCandidato(nome, email, cpf, estado, descricao, cep, competencias, idade, telefone, linkedin);
             alert("Candidato cadastrado com sucesso");
             document.getElementById("candidato-nome").value = "";
             document.getElementById("candidato-email").value = "";
@@ -121,14 +124,18 @@ if (btnCadastrar) {
             document.getElementById("candidato-idade").value = "";
             document.getElementById("candidato-estado").value = "";
             document.getElementById("candidato-cep").value = "";
+            document.getElementById("candidato-linkedin").value = "";
+            document.getElementById("candidato-telefone").value = "";
             document.getElementById("candidato-descricao").value = "";
             document.getElementById("candidato-competencias-input").value = "";
             competenciasUsuarioCadastroAtual = [];
             atualizarListagemDeCandidatos();
             atualizarGraficoCompetencias();
         }
-        else {
-            alert("Erro ao cadastrar candidato");
+        catch (e) {
+            if (e instanceof Error) {
+                alert(e.message);
+            }
         }
     });
 }
@@ -198,7 +205,8 @@ if (btnCadastrarEmpresa) {
         const estado = document.getElementById("empresa-estado").value;
         const cep = document.getElementById("empresa-cep").value;
         const descricao = document.getElementById("empresa-descricao").value;
-        if (empresaService.cadastrarEmpresa(nome, email, cnpj, estado, descricao, cep)) {
+        try {
+            empresaService.cadastrarEmpresa(nome, email, cnpj, estado, descricao, cep);
             alert("Empresa cadastrada com sucesso");
             document.getElementById("empresa-nome").value = "";
             document.getElementById("empresa-email").value = "";
@@ -207,8 +215,10 @@ if (btnCadastrarEmpresa) {
             document.getElementById("empresa-cep").value = "";
             document.getElementById("empresa-descricao").value = "";
         }
-        else {
-            alert("Erro ao cadastrar empresa");
+        catch (e) {
+            if (e instanceof Error) {
+                alert(e.message);
+            }
         }
     });
 }

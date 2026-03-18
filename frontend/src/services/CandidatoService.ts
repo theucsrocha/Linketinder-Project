@@ -4,10 +4,11 @@ import { Vaga } from "../models/Vaga.js";
 export class CandidatoService{
     candidatosCadastrados:Array<Candidato> = []
 
-    cadastrarCandidato(nome:string,email:string,cpf:string,estado:string,descricao:string,cep:string,competencias:Array<string>,idade:number):boolean{
-        let novoCandidato:Candidato = new Candidato(nome,email,cpf,estado,descricao,cep,competencias,idade)
+    cadastrarCandidato(nome:string,email:string,cpf:string,estado:string,descricao:string,cep:string,competencias:Array<string>,idade:number,telefone:string,linkedin:string):void{
+        this.validadorDados(nome,email,cpf,estado,descricao,cep,competencias,idade,telefone,linkedin)
+        let novoCandidato:Candidato = new Candidato(nome,email,cpf,estado,descricao,cep,competencias,idade,telefone,linkedin)
         this.candidatosCadastrados.push(novoCandidato)
-        return true
+      
     }
 
     removerCandidatoPorCpf(cpf:string):boolean{
@@ -43,5 +44,23 @@ export class CandidatoService{
         }
         return candidato
     }
+
+    validadorDados(nome:string,email:string,cpf:string,estado:string,descricao:string,cep:string,competencias:Array<string>,idade:number,telefone:string,linkedin:string){
+        if(!email.match(/\S+@\w+\.\w{2,6}(\.\w{2})?/g)){
+            throw new Error('Email invalido')
+        }
+        if(!cpf.match(/\d{3}\.\d{3}\.\d{3}-\d{2}/)){
+            throw new Error('CPF com formato inválido')
+        }
+        if(!cep.match(/\d{5}-\d{3}/)){
+            throw new Error('CEP com formato inválido')
+        }
+        if(!telefone.match(/\(\d{2}\)\d{4,5}-\d{4}/)){
+            throw new Error('Telefone com formato inválido')
+        }
+        if(!linkedin.match(/www.linkedin.com\/in\/.+\//)){
+            throw new Error('Link do Linkedin inválido')
+        }
+}
 }
 

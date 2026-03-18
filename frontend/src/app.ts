@@ -122,6 +122,8 @@ if (btnCadastrar) {
     e.preventDefault?.();
     const nome = (document.getElementById("candidato-nome") as HTMLInputElement).value;
     const email = (document.getElementById("candidato-email") as HTMLInputElement).value;
+    const linkedin = (document.getElementById("candidato-linkedin") as HTMLInputElement).value;
+    const telefone = (document.getElementById("candidato-telefone") as HTMLInputElement).value;
     const cpf = (document.getElementById("candidato-cpf") as HTMLInputElement).value;
     const idade = parseInt((document.getElementById("candidato-idade") as HTMLInputElement).value);
     const estado = (document.getElementById("candidato-estado") as HTMLInputElement).value;
@@ -129,7 +131,8 @@ if (btnCadastrar) {
     const descricao = (document.getElementById("candidato-descricao") as HTMLInputElement).value;
     const competencias = competenciasUsuarioCadastroAtual.slice();
 
-    if (candidatoService.cadastrarCandidato(nome, email, cpf, estado, descricao, cep, competencias, idade)) {
+    try{
+      candidatoService.cadastrarCandidato(nome, email, cpf, estado, descricao, cep, competencias, idade,telefone,linkedin)
       alert("Candidato cadastrado com sucesso");
       (document.getElementById("candidato-nome") as HTMLInputElement).value = "";
       (document.getElementById("candidato-email") as HTMLInputElement).value = "";
@@ -137,14 +140,20 @@ if (btnCadastrar) {
       (document.getElementById("candidato-idade") as HTMLInputElement).value = "";
       (document.getElementById("candidato-estado") as HTMLInputElement).value = "";
       (document.getElementById("candidato-cep") as HTMLInputElement).value = "";
+      (document.getElementById("candidato-linkedin") as HTMLInputElement).value = "";
+      (document.getElementById("candidato-telefone") as HTMLInputElement).value = "";
       (document.getElementById("candidato-descricao") as HTMLInputElement).value = "";
       (document.getElementById("candidato-competencias-input") as HTMLInputElement).value = "";
       competenciasUsuarioCadastroAtual = [];
       atualizarListagemDeCandidatos();
       atualizarGraficoCompetencias();
-    } else {
-      alert("Erro ao cadastrar candidato");
     }
+    catch(e){
+      if(e instanceof Error){
+        alert(e.message);
+      }
+    }
+    
   });
 }
 
@@ -221,7 +230,8 @@ if (btnCadastrarEmpresa) {
     const cep = (document.getElementById("empresa-cep") as HTMLInputElement).value;
     const descricao = (document.getElementById("empresa-descricao") as HTMLInputElement).value;
    
-    if (empresaService.cadastrarEmpresa(nome, email, cnpj, estado, descricao, cep,)) {
+    try{
+    empresaService.cadastrarEmpresa(nome, email, cnpj, estado, descricao, cep,) 
       alert("Empresa cadastrada com sucesso");
       (document.getElementById("empresa-nome") as HTMLInputElement).value = "";
       (document.getElementById("empresa-email") as HTMLInputElement).value = "";
@@ -229,8 +239,10 @@ if (btnCadastrarEmpresa) {
       (document.getElementById("empresa-estado") as HTMLInputElement).value = "";
       (document.getElementById("empresa-cep") as HTMLInputElement).value = "";
       (document.getElementById("empresa-descricao") as HTMLInputElement).value = "";
-    } else {
-      alert("Erro ao cadastrar empresa");
+    } catch(e){
+      if(e instanceof Error){
+        alert(e.message)
+      }
     }
   });
 }
