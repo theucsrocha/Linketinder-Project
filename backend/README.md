@@ -40,4 +40,4 @@ Nova Feature: Adicionado a função de adicionar um novo candidato e empresa, ac
 ### 📊 Modelo Entidade Relacionamento (DER)
 Abaixo está a modelagem conceitual do banco de dados, desenvolvida utilizando a ferramenta **brModelo**.
 
-![DER Linketinder](./Modelagem%20Banco.png)
+![DER Linketinder](./Modelagem-Banco.png)
