@@ -1,0 +1,75 @@
+-- 1. Tabela de Competências 
+CREATE TABLE COMPETENCIA(
+    ID_COMPETENCIA SERIAL PRIMARY KEY,
+    NOME VARCHAR(50) NOT NULL
+);
+
+-- 2. Tabela de Candidato
+CREATE TABLE CANDIDATO(
+    CPF VARCHAR(14) PRIMARY KEY, 
+    NOME VARCHAR(100) NOT NULL,
+    DATA_NASCIMENTO DATE,
+    CEP VARCHAR(9) NOT NULL,
+    SENHA VARCHAR(50) NOT NULL,
+    DESCRICAO TEXT NOT NULL,
+    EMAIL VARCHAR(50) NOT NULL
+);
+
+-- 3. Tabela de Empresa
+CREATE TABLE EMPRESA(
+    CNPJ VARCHAR(18) PRIMARY KEY,
+    NOME VARCHAR(100) NOT NULL,
+    DESCRICAO TEXT NOT NULL,
+    SENHA VARCHAR(50) NOT NULL,
+    CEP VARCHAR(9) NOT NULL,
+    EMAIL VARCHAR(50) NOT NULL
+);
+
+-- 4. Tabela de Vaga 
+CREATE TABLE VAGA(
+    ID_VAGA SERIAL PRIMARY KEY,
+    NOME VARCHAR(100) NOT NULL,
+    LOCAL_VAGA VARCHAR(100) NOT NULL,
+    CNPJ_EMPRESA VARCHAR(18) REFERENCES EMPRESA(CNPJ) NOT NULL
+);
+
+-- 5. Tabelas N:N (Relacionamentos)
+
+CREATE TABLE COMPETENCIA_CANDIDATO(
+    ID_COMPETENCIA INT REFERENCES COMPETENCIA(ID_COMPETENCIA),
+    CPF_CANDIDATO VARCHAR(14) REFERENCES CANDIDATO(CPF),
+    PRIMARY KEY (ID_COMPETENCIA, CPF_CANDIDATO)
+);
+
+CREATE TABLE COMPETENCIA_VAGA(
+    ID_VAGA INT REFERENCES VAGA(ID_VAGA),
+    ID_COMPETENCIA INT REFERENCES COMPETENCIA(ID_COMPETENCIA),
+    PRIMARY KEY (ID_VAGA, ID_COMPETENCIA)
+);
+
+-- ===== 5 CANDIDATOS FICTÍCIOS =====
+INSERT INTO CANDIDATO (CPF, NOME, DATA_NASCIMENTO, CEP, SENHA, DESCRICAO, EMAIL) VALUES 
+('111.222.333-44', 'Sandubinha Silva', '2000-01-01', '40000-001', 'senha123', 'Dev em busca de match.', 'sanduba@email.com'),
+('222.333.444-55', 'Carla Tech', '1995-05-10', '41000-002', 'carla95', 'Especialista em Front-end.', 'carla@email.com'),
+('333.444.555-66', 'Marcos Backend', '1992-08-20', '42000-003', 'marcos92', 'Focado em escalabilidade.', 'marcos@email.com'),
+('444.555.666-77', 'Ana Data', '1998-12-30', '43000-004', 'ana1234', 'Apaixonada por Python e Dados.', 'ana@email.com'),
+('555.666.777-88', 'Pedro Groovy', '2001-03-15', '44000-005', 'pedro01', 'Estudante de sistemas no IFBA.', 'pedro@email.com');
+
+
+-- ===== 5 EMPRESAS FICTÍCIAS =====
+INSERT INTO EMPRESA (CNPJ, NOME, DESCRICAO, SENHA, CEP, EMAIL) VALUES 
+('11.111.111/0001-01', 'Pastelsoft ERP', 'ERPs para restaurantes.', 'pastel123', '40100-000', 'vagas@pastel.com'),
+('22.222.222/0001-02', 'Salvador Tech', 'Consultoria de software na Bahia.', 'salva456', '40200-000', 'rh@salvador.com'),
+('33.333.333/0001-03', 'Bradesco Prime', 'Setor bancário e inovação.', 'bradesco789', '40300-000', 'tech@bradesco.com'),
+('44.444.444/0001-04', 'Inova IFBA', 'Startup incubada no instituto.', 'inova321', '40400-000', 'contato@inova.com'),
+('55.555.555/0001-05', 'Cloud Bahia', 'Especialistas em AWS e Docker.', 'cloud654', '40500-000', 'jobs@cloud.com');
+
+-- ===== 5 VAGAS FICTÍCIAS (Relacionadas às Empresas) =====
+INSERT INTO VAGA (NOME, LOCAL_VAGA, CNPJ_EMPRESA) VALUES 
+('Dev Java Jr', 'Remoto', '11.111.111/0001-01'),
+('Analista Angular', 'Salvador-BA', '22.222.222/0001-02'),
+('Engenheiro de Dados', 'São Paulo-SP', '33.333.333/0001-03'),
+('Estágio em Groovy', 'Salvador-BA', '44.444.444/0001-04'),
+('Dev Python Pleno', 'Híbrido', '55.555.555/0001-05');
+
+
