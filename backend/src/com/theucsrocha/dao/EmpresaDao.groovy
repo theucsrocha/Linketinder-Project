@@ -1,3 +1,4 @@
+package com.theucsrocha.dao
 import com.theucsrocha.entities.Empresa
 import groovy.sql.Sql
 

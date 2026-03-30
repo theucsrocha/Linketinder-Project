@@ -14,7 +14,6 @@ class Candidato implements IPessoa{
 📧 Email: $email
 🆔 CPF: $cpf
 🎂 Data de Nascimento: $dataNascimento
-📍 Estado: $estado
 📮 CEP: $cep
 📝 Descrição: $descricaoPessoal
 🛠 Competências: ${competencias?.join(", ")}

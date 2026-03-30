@@ -2,16 +2,18 @@ package com.theucsrocha.entities
 import com.theucsrocha.util.ConnectionFactory
 class App {
     static void main(String[] args) {
-        Sistema sistema = new Sistema()
-         def opcao = 0
+        Sistema sistema
+        def opcao = 0
          def leitor = System.in.newReader()
 
         try {
             def sql = ConnectionFactory.create()
             println "Conectado com sucesso ao banco: " + sql.firstRow("SELECT current_database()")[0]
-            sql.close()
+            sistema = new Sistema(sql)
+
         } catch (Exception e) {
             println "Erro ao conectar: " + e.message
+            sistema = null
         }
 
         println("Seja bem vindo ao LinkerTinder!")
@@ -38,11 +40,11 @@ class App {
 
             switch (opcao){
                 case 1:
-                    sistema.candidatos.each { println(it) }
+                   sistema.listarCandidatos()
                     break
 
                 case 2:
-                    sistema.empresas.each { println(it) }
+                    sistema.listarEmpresas()
                     break
 
                 case 3:
@@ -127,6 +129,7 @@ class App {
 
                 case 9:
                     println("Saindo...")
+
                     break
 
                 default:
@@ -134,6 +137,7 @@ class App {
                     break
             }
         }
+
     }
 
 }

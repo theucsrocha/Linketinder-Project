@@ -1,3 +1,5 @@
+package com.theucsrocha.dao
+
 import com.theucsrocha.entities.Candidato
 import com.theucsrocha.entities.Empresa
 import groovy.sql.Sql
@@ -12,7 +14,7 @@ class CandidatoDao{
     }
 
     void inserir(Candidato candidato){
-        String query = "INSERT INTO CANDIDATO(CPF,NOME,DATA_NASCIMENTO,CEP,SENHA,DESCRICAO,EMAIL) VALUES ?,?,?,?,?,?,?"
+        String query = "INSERT INTO CANDIDATO(CPF,NOME,DATA_NASCIMENTO,CEP,SENHA,DESCRICAO,EMAIL) VALUES (?,?,?,?,?,?,?)"
         db.executeInsert(query,candidato.cpf,candidato.nome,candidato.dataNascimento,candidato.cep,candidato.senha,candidato.descricaoPessoal,candidato.email)
     }
 
@@ -30,9 +32,9 @@ class CandidatoDao{
                     nome: row.nome,
                     email: row.email,
                     cpf: row.cpf,
-                    dataNascimento: row.datanascimento,
+                    dataNascimento: row.data_nascimento.toLocalDate(),
                     cep: row.cep,
-                    descricaoPessoal: row.descricaopessoal,
+                    descricaoPessoal: row.descricao,
                     senha: row.senha
             ))
         }
