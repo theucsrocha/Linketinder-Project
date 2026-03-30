@@ -11,7 +11,7 @@ class Sistema {
                     "SP",
                     "Empresa focada em backend Java.",
                     "01000-000",
-                    ["Java", "Spring"]
+
             ),
             new Empresa(
                     "DataCorp",
@@ -21,7 +21,7 @@ class Sistema {
                     "MG",
                     "Empresa especializada em dados.",
                     "30000-000",
-                    ["Python", "SQL"]
+
             ),
             new Empresa(
                     "CloudSys",
@@ -31,7 +31,7 @@ class Sistema {
                     "RS",
                     "Infraestrutura cloud.",
                     "90000-000",
-                    ["Docker", "AWS"]
+
             ),
             new Empresa(
                     "FrontDev",
@@ -41,7 +41,7 @@ class Sistema {
                     "RJ",
                     "Frontend moderno.",
                     "20000-000",
-                    ["Angular", "TypeScript"]
+
             ),
             new Empresa(
                     "FullStack Solutions",
@@ -51,7 +51,7 @@ class Sistema {
                     "BA",
                     "Projetos fullstack.",
                     "40000-000",
-                    ["Java", "Angular", "Spring"]
+
             )
     ]
     public def candidatos =  [
@@ -63,7 +63,7 @@ class Sistema {
                     estado: "BA",
                     cep: "40000-000",
                     descricaoPessoal: "Backend developer.",
-                    competencias: ["Java", "Spring", "SQL"]
+
             ),
             new Candidato(
                     nome: "Ana Souza",
@@ -73,7 +73,7 @@ class Sistema {
                     estado: "SP",
                     cep: "01000-000",
                     descricaoPessoal: "Especialista frontend.",
-                    competencias: ["Angular", "TypeScript", "HTML"]
+
             ),
             new Candidato(
                     nome: "Carlos Lima",
@@ -83,7 +83,7 @@ class Sistema {
                     estado: "MG",
                     cep: "30000-000",
                     descricaoPessoal: "Engenheiro de dados.",
-                    competencias: ["Python", "SQL", "Machine Learning"]
+
             ),
             new Candidato(
                     nome: "Fernanda Alves",
@@ -93,7 +93,7 @@ class Sistema {
                     estado: "RS",
                     cep: "90000-000",
                     descricaoPessoal: "Cloud engineer.",
-                    competencias: ["Docker", "AWS", "Kubernetes"]
+
             ),
             new Candidato(
                     nome: "Lucas Mendes",
@@ -103,7 +103,7 @@ class Sistema {
                     estado: "BA",
                     cep: "40000-000",
                     descricaoPessoal: "Fullstack developer.",
-                    competencias: ["Java", "Angular", "Spring", "SQL"]
+
             )
     ]
 

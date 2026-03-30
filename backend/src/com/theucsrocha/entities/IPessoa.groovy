@@ -1,11 +1,12 @@
 package com.theucsrocha.entities
+import java.time.LocalDate
 
 trait IPessoa {
     String nome
     String email
     String cpf
-    Integer idade
-    String estado
+    LocalDate dataNascimento
     String cep
     String descricaoPessoal
+    String senha
 }

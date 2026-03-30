@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/backend">
+      <sourceFolder url="file://$MODULE_DIR$/backend/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/backend/src/com/theucsrocha/dao" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="zulu-17" jdkType="JavaSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="apache.ivy" level="application" />
+    <orderEntry type="library" exported="" name="apache.groovy.sql" level="project" />
+    <orderEntry type="library" exported="" name="spockframework.spock.core" level="project" />
+    <orderEntry type="library" name="postgresql" level="project" />
+  </component>
+</module>

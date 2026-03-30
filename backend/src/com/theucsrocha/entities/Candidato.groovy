@@ -1,9 +1,11 @@
 package com.theucsrocha.entities
 
+import java.time.LocalDate
+
 @groovy.transform.TupleConstructor
 class Candidato implements IPessoa{
     List<Empresa> empresasCurtidas = []
-    List<String> competencias
+    List<Competencia> competencias = []
     @Override
     String toString() {
         return """
@@ -11,7 +13,7 @@ class Candidato implements IPessoa{
 👤 Candidato: $nome
 📧 Email: $email
 🆔 CPF: $cpf
-🎂 Idade: $idade
+🎂 Data de Nascimento: $dataNascimento
 📍 Estado: $estado
 📮 CEP: $cep
 📝 Descrição: $descricaoPessoal
@@ -22,6 +24,10 @@ class Candidato implements IPessoa{
 
     void curtirEmpresa(Empresa empresa){
         this.empresasCurtidas.add(empresa)
+    }
+
+    void adicionarCompetencia(Competencia comp) {
+        this.competencias << comp
     }
 
 }

@@ -1,10 +1,18 @@
 package com.theucsrocha.entities
-
+import com.theucsrocha.util.ConnectionFactory
 class App {
     static void main(String[] args) {
         Sistema sistema = new Sistema()
-        def opcao = 0
-        def leitor = System.in.newReader()
+         def opcao = 0
+         def leitor = System.in.newReader()
+
+        try {
+            def sql = ConnectionFactory.create()
+            println "Conectado com sucesso ao banco: " + sql.firstRow("SELECT current_database()")[0]
+            sql.close()
+        } catch (Exception e) {
+            println "Erro ao conectar: " + e.message
+        }
 
         println("Seja bem vindo ao LinkerTinder!")
 
@@ -127,4 +135,5 @@ class App {
             }
         }
     }
+
 }
