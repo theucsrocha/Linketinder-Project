@@ -1,6 +1,7 @@
 package com.theucsrocha.dao
 
 import com.theucsrocha.entities.Candidato
+import com.theucsrocha.entities.Competencia
 import com.theucsrocha.entities.Empresa
 import groovy.sql.Sql
 
@@ -8,14 +9,17 @@ import java.time.LocalDate
 
 class CandidatoDao{
     private Sql db
+    private CompetenciaDao competenciaDao
 
     CandidatoDao(Sql connection){
+        this.competenciaDao  = new CompetenciaDao(connection)
         this.db = connection
+
     }
 
     void inserir(Candidato candidato){
         String query = "INSERT INTO CANDIDATO(CPF,NOME,DATA_NASCIMENTO,CEP,SENHA,DESCRICAO,EMAIL) VALUES (?,?,?,?,?,?,?)"
-        db.executeInsert(query,candidato.cpf,candidato.nome,candidato.dataNascimento,candidato.cep,candidato.senha,candidato.descricaoPessoal,candidato.email)
+        db.executeInsert(query,[candidato.cpf,candidato.nome,candidato.dataNascimento,candidato.cep,candidato.senha,candidato.descricaoPessoal,candidato.email])
     }
 
     void remover(Candidato candidato){
@@ -64,4 +68,20 @@ class CandidatoDao{
         return candidato
 
     }
+
+    void adicionarCompetenciasNoCandidato(String cpf,List<String> competencias){
+        String query = "INSERT INTO COMPETENCIA_CANDIDATO (ID_COMPETENCIA,CPF_CANDIDATO) VALUES (?,?)"
+
+        competencias.forEach {competencia ->
+            db.executeInsert(query,[competenciaDao.findByNome(competencia).id,cpf])
+        }
+    }
+
+    List<Competencia> getCompetenciasDoCandidatoPorCpf(String cpf){
+        String query = "SELECT C.NOME FROM COMPETENCIA_CANDIDATO CD INNER JOIN COMPETENCIA C ON CD.ID_COMPETENCIA = C.ID_COMPETENCIA WHERE CD.CPF_CANDIDATO = ?"
+        List<Competencia> competencias = []
+        db.eachRow(query,[cpf],{competencias.add(new Competencia(it.nome))})
+        return competencias
+    }
+
 }

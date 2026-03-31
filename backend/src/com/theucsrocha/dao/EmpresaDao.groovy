@@ -9,8 +9,8 @@ class EmpresaDao {
     }
 
     void inserir(Empresa empresa){
-        String query = "INSERT INTO EMPRESA (CNPJ,NOME,DESCRICAO,SENHA,CEP,EMAIL) VALUES ?,?,?,?,?,?"
-        db.executeInsert(query,empresa.cnpj,empresa.nome,empresa.descricao,empresa.senha,empresa.cep,empresa.email)
+        String query = "INSERT INTO EMPRESA (CNPJ,NOME,DESCRICAO,SENHA,CEP,EMAIL) VALUES (?,?,?,?,?,?)"
+        db.executeInsert(query,[empresa.cnpj,empresa.nome,empresa.descricao,empresa.senha,empresa.cep,empresa.email])
     }
 
     void remove(Empresa empresa){
@@ -38,7 +38,7 @@ class EmpresaDao {
     Empresa findByCNPJ(String cnpj){
         Empresa empresa
         String query = "SELECT * FROM EMPRESA C WHERE C.CNPJ=?"
-        db.eachRow(query,{row->
+        db.eachRow(query,[cnpj],{row->
             empresa = new Empresa(
                     cnpj: row.cnpj,
                     nome: row.nome,

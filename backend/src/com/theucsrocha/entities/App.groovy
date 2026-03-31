@@ -1,5 +1,9 @@
 package com.theucsrocha.entities
 import com.theucsrocha.util.ConnectionFactory
+
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
+
 class App {
     static void main(String[] args) {
         Sistema sistema
@@ -18,7 +22,7 @@ class App {
 
         println("Seja bem vindo ao LinkerTinder!")
 
-        while(opcao != 9){
+        while(opcao != 11){
             println("\n--- Opções ---")
             println("1 - Listar todos os candidatos")
             println("2 - Listar todas as empresas")
@@ -28,7 +32,9 @@ class App {
             println("6 - Listar todos os matches <3")
             println("7 - Adicionar novo Candidato")
             println("8 - Adicionar nova Empresa")
-            println("9 - Sair")
+            println("9 - Adicionar nova Vaga")
+            println("10 - Listar vagas")
+            println("11 - Sair")
             print("Digite sua opção:")
 
             def entrada = leitor.readLine()
@@ -48,9 +54,9 @@ class App {
                     break
 
                 case 3:
-                    sistema.empresas.each { empresa ->
-                        println("Candidatos compativeis com a empresa ${empresa.getNome()}:")
-                        sistema.candidatos.each { candidato ->
+                    sistema.getAllEmpresas().each { empresa ->
+                        println("Candidatos compativeis com a empresa ${empresa.nome}:")
+                        sistema.getAllCandidatos().each { candidato ->
                             if (sistema.verificadorDeCompatibilidade(empresa, candidato)) {
                                 println(candidato.getNome())
                             }
@@ -61,12 +67,12 @@ class App {
                 case 4:
                     println("Digite o cpf do Canditato:")
                     def cpf = leitor.readLine()
-                    Candidato candidato = sistema.candidatos.find { it.getCpf() == cpf }
+                    Candidato candidato = sistema.getCandidatoByCPF(cpf)
                     if (candidato == null) { println("Candidato não encontrado"); break }
 
                     println("Digite o cnpj da empresa:")
                     def cnpj = leitor.readLine()
-                    Empresa empresa = sistema.empresas.find { it.getCnpj() == cnpj }
+                    Empresa empresa = sistema.getEmpresaByCNPJ(cnpj)
                     if (empresa == null) { println("Empresa não encontrada"); break }
 
                     candidato.curtirEmpresa(empresa)
@@ -76,12 +82,12 @@ class App {
                 case 5:
                     println("Digite o cnpj da Empresa:")
                     def cnpjEmp = leitor.readLine()
-                    Empresa empresaEmp = sistema.empresas.find { it.getCnpj() == cnpjEmp }
+                    Empresa empresaEmp = sistema.getEmpresaByCNPJ(cnpjEmp)
                     if (empresaEmp == null) { println("Empresa não encontrada"); break }
 
                     println("Digite o cpf do Candidato:")
                     def cpfCand = leitor.readLine()
-                    Candidato candidatoCand = sistema.candidatos.find { it.getCpf() == cpfCand }
+                    Candidato candidatoCand = sistema.getCandidatoByCPF(cpfCand)
                     if (candidatoCand == null) { println("Candidato não encontrado"); break }
 
                     empresaEmp.curtirCandidato(candidatoCand)
@@ -89,7 +95,7 @@ class App {
                     break
 
                 case 6:
-                    sistema.listarMatches(sistema.empresas, sistema.candidatos)
+                    sistema.listarMatches(sistema.getAllEmpresas(),sistema.getAllCandidatos())
                     break
 
                 case 7:
@@ -97,14 +103,28 @@ class App {
                     print("Nome: "); def n = leitor.readLine()
                     print("Email: "); def e = leitor.readLine()
                     print("CPF: "); def c = leitor.readLine()
-                    print("Idade: "); def i = leitor.readLine().toInteger()
+                    print("Data de Nascimento (yyyy-MM-dd): "); def dataNascimentoTexto = leitor.readLine()
+                    print("CEP: "); def cep = leitor.readLine()
+                    print("Descrição pessoal: "); def descricao = leitor.readLine()
+                    print("Senha: "); def senha = leitor.readLine()
                     print("Competências (separe por vírgula): ")
-                    def comps = leitor.readLine().split(",").collect { it.trim() }
+                    def comps = leitor.readLine().split(",").collect { it.trim() }.findAll { !it.isBlank() }
 
                     try {
-                        def novoC = new Candidato(nome: n, email: e, cpf: c, idade: i, competencias: comps)
-                        sistema.adicionarCandidato(novoC)
+                        def dataNascimento = LocalDate.parse(dataNascimentoTexto)
+                        def novoC = new Candidato(
+                                nome: n,
+                                email: e,
+                                cpf: c,
+                                dataNascimento: dataNascimento,
+                                cep: cep,
+                                descricaoPessoal: descricao,
+                                senha: senha
+                        )
+                        sistema.adicionarCandidato(novoC,comps)
                         println("Candidato adicionado com sucesso!")
+                    } catch (DateTimeParseException ex) {
+                        println("Data inválida. Use o formato yyyy-MM-dd.")
                     } catch (IllegalArgumentException ex) {
                         println("Erro ao adicionar: ${ex.message}")
                     }
@@ -115,11 +135,19 @@ class App {
                     print("Nome: "); def ne = leitor.readLine()
                     print("Email: "); def ee = leitor.readLine()
                     print("CNPJ: "); def cj = leitor.readLine()
-                    print("Exigências (separe por vírgula): ")
-                    def exig = leitor.readLine().split(",").collect { it.trim() }
+                    print("Descrição: "); def desc = leitor.readLine()
+                    print("CEP: "); def cepEmpresa = leitor.readLine()
+                    print("Senha: "); def senhaEmpresa = leitor.readLine()
 
                     try {
-                        def novaE = new Empresa(nome: ne, email: ee, cnpj: cj, exigencias: exig, pais: "Brasil", estado: "BA", descricao: "Empresa cadastrada via App", cep: "00000-000")
+                        def novaE = new Empresa(
+                                nome: ne,
+                                email: ee,
+                                cnpj: cj,
+                                descricao: desc,
+                                cep: cepEmpresa,
+                                senha: senhaEmpresa
+                        )
                         sistema.adicionarEmpresa(novaE)
                         println("Empresa adicionada com sucesso!")
                     } catch (IllegalArgumentException ex) {
@@ -128,8 +156,41 @@ class App {
                     break
 
                 case 9:
-                    println("Saindo...")
+                    println("\n--- Cadastro de Vaga ---")
+                    print("Nome: "); def nomeVaga = leitor.readLine()
+                    print("Descrição: "); def descricaoVaga = leitor.readLine()
+                    print("Local: "); def localVaga = leitor.readLine()
+                    print("CNPJ da empresa: "); def cnpjVaga = leitor.readLine()
+                    print("Competências exigidas (separe por vírgula): ")
+                    def competenciasVaga = leitor.readLine().split(",").collect { it.trim() }.findAll { !it.isBlank() }
 
+                    Empresa empresaDaVaga = sistema.getEmpresaByCNPJ(cnpjVaga)
+                    if (empresaDaVaga == null) {
+                        println("Empresa não encontrada")
+                        break
+                    }
+
+                    try {
+                        def novaVaga = new Vaga(
+                                nome: nomeVaga,
+                                descricao: descricaoVaga,
+                                local: localVaga,
+                                empresa: empresaDaVaga
+                        )
+                        sistema.adicionarVaga(novaVaga, competenciasVaga)
+                        println("Vaga adicionada com sucesso!")
+                    } catch (IllegalArgumentException ex) {
+                        println("Erro ao adicionar: ${ex.message}")
+                    }
+                    break
+
+                case 10:
+                    sistema.listarVagas()
+                    break
+
+                case 11:
+                    println("Saindo...")
+                    sistema.close()
                     break
 
                 default:

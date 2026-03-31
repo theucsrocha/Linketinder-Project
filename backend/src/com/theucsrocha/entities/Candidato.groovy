@@ -25,8 +25,7 @@ class Candidato implements IPessoa{
         this.empresasCurtidas.add(empresa)
     }
 
-    void adicionarCompetencia(Competencia comp) {
-        this.competencias << comp
-    }
+
+
 
 }
