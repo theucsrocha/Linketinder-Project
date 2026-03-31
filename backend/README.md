@@ -37,6 +37,8 @@ O Match indica que há interesse mútuo entre as duas partes, permitindo que ava
 
 Nova Feature: Adicionado a função de adicionar um novo candidato e empresa, acompanhado por testes unitatios do Spock.
 
+Nova Feature: O app agora também permite cadastrar e listar vagas. O cadastro de vaga busca a empresa pelo `CNPJ`, então a empresa precisa já existir no banco. As competências informadas para candidatos e vagas também precisam estar previamente cadastradas na tabela `COMPETENCIA`.
+Nova Feature: Agora o sistema é integrado ao banco de dados
 ### 📊 Modelo Entidade Relacionamento (DER)
 Abaixo está a modelagem conceitual do banco de dados, desenvolvida utilizando a ferramenta **brModelo**.
 
