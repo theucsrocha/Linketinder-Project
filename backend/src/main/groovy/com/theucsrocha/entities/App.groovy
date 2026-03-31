@@ -5,7 +5,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
 class App {
-    static void main(String[] args) {
+    static void main(String[] ignoredArgs) {
         Sistema sistema
         def opcao = 0
          def leitor = System.in.newReader()

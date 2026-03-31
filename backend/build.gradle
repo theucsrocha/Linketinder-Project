@@ -1,0 +1,29 @@
+plugins {
+    id 'groovy'
+}
+
+group = 'com.theucsrocha'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Groovy e SQL
+    implementation 'org.apache.groovy:groovy:4.0.12'
+    implementation 'org.apache.groovy:groovy-sql:4.0.12'
+
+    // Driver do Postgres (Não precisa mais do .jar na pasta lib!)
+    implementation 'org.postgresql:postgresql:42.7.2'
+
+    testImplementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
+    testImplementation 'org.spockframework:spock-core'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'net.bytebuddy:byte-buddy:1.14.18'
+    testRuntimeOnly 'org.objenesis:objenesis:3.4'
+}
+
+test {
+    useJUnitPlatform()
+}

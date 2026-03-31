@@ -2,10 +2,7 @@ package com.theucsrocha.dao
 
 import com.theucsrocha.entities.Candidato
 import com.theucsrocha.entities.Competencia
-import com.theucsrocha.entities.Empresa
 import groovy.sql.Sql
-
-import java.time.LocalDate
 
 class CandidatoDao{
     private Sql db

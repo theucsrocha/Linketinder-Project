@@ -1,7 +1,5 @@
 package com.theucsrocha.entities
 
-import java.time.LocalDate
-
 @groovy.transform.TupleConstructor
 class Candidato implements IPessoa{
     List<Empresa> empresasCurtidas = []

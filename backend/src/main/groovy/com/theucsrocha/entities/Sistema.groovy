@@ -23,8 +23,12 @@ class Sistema {
     }
 
     boolean verificadorDeCompatibilidade(Empresa empresa,Candidato candidato){
-
-        candidato.getCompetencias().containsAll(empresa.getExigencias())
+        def competenciasDoCandidato = candidato.competencias*.nome ?: []
+        def competenciasDaVaga = vagaDao.getAllVagas()
+                .findAll { it.empresa?.cnpj == empresa.cnpj }
+                .collectMany { vagaDao.getCompetenciasDaVagaPorId(it.id)*.nome }
+                .unique()
+        return competenciasDoCandidato.containsAll(competenciasDaVaga)
     }
 
     void listarMatches(List<Empresa> empresas,List<Candidato> candidatoes){
