@@ -49,11 +49,6 @@ class EmpresaDao {
             )
 
         })
-        if (empresa == null) {
-            println("Empresa não encontrada")
-            return null
-
-        }
         return empresa
 
     }

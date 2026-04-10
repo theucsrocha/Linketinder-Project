@@ -23,7 +23,11 @@ class VagaDao {
         String query = "INSERT INTO COMPETENCIA_VAGA (ID_VAGA,ID_COMPETENCIA) VALUES (?,?)"
 
         competencias.forEach {competencia ->
-            db.executeInsert(query,[vagaID,competenciaDao.findByNome(competencia).id])
+            def competenciaEncontrada = competenciaDao.findByNome(competencia)
+            if (competenciaEncontrada == null) {
+                throw new IllegalArgumentException("Competência não encontrada: ${competencia}")
+            }
+            db.executeInsert(query,[vagaID,competenciaEncontrada.id])
         }
     }
     int contarVagas() {

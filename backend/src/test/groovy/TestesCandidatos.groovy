@@ -142,4 +142,62 @@ class TestesApp extends Specification {
         then:
         1 * sql.close()
     }
+
+    def "adicionar candidato falha quando uma competencia nao existe"() {
+        given:
+        def candidatoDao = Mock(com.theucsrocha.dao.CandidatoDao)
+        def service = new CandidatoService(candidatoDao)
+        def candidato = new Candidato(
+                nome: "Matheus",
+                email: "matheus@email.com",
+                cpf: "12345678900",
+                dataNascimento: LocalDate.of(2000, 1, 1),
+                cep: "40000000",
+                descricaoPessoal: "Backend",
+                senha: "123456"
+        )
+
+        when:
+        service.adicionarCandidato(candidato, ["Java"])
+
+        then:
+        1 * candidatoDao.inserir(candidato)
+        1 * candidatoDao.adicionarCompetenciasNoCandidato("12345678900", ["Java"]) >> {
+            throw new IllegalArgumentException("Competência não encontrada: Java")
+        }
+        def erro = thrown(IllegalArgumentException)
+        erro.message == "Competência não encontrada: Java"
+    }
+
+    def "adicionar vaga falha quando uma competencia nao existe"() {
+        given:
+        def vagaDao = Mock(com.theucsrocha.dao.VagaDao)
+        def service = new VagaService(vagaDao)
+        def empresa = new Empresa(
+                nome: "PastelSoft",
+                email: "rh@pastelsoft.com",
+                cnpj: "12345678000199",
+                descricao: "Software house",
+                cep: "40000000",
+                senha: "123456"
+        )
+        def vaga = new Vaga(
+                nome: "Pessoa Desenvolvedora Groovy",
+                descricao: "Atuar no backend",
+                local: "Remoto",
+                empresa: empresa
+        )
+
+        when:
+        service.adicionarVaga(vaga, ["Groovy"])
+
+        then:
+        1 * vagaDao.inserir(vaga)
+        1 * vagaDao.contarVagas() >> 7
+        1 * vagaDao.adicionarCompetenciasNaVaga(7, ["Groovy"]) >> {
+            throw new IllegalArgumentException("Competência não encontrada: Groovy")
+        }
+        def erro = thrown(IllegalArgumentException)
+        erro.message == "Competência não encontrada: Groovy"
+    }
 }

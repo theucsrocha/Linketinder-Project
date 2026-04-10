@@ -27,10 +27,10 @@ class Sistema {
         return competenciasDoCandidato.containsAll(competenciasDaVaga)
     }
 
-    void listarMatches(List<Empresa> empresas,List<Candidato> candidatoes){
+    void listarMatches(List<Empresa> empresas,List<Candidato> candidatos){
         println("Matches:")
         empresas.each { empresa->
-            candidatoes.each {if (it.getEmpresasCurtidas().contains(empresa) && empresa.candidatoesCurtidos.contains(it)){
+            candidatos.each {if (it.getEmpresasCurtidas().contains(empresa) && empresa.candidatoesCurtidos.contains(it)){
                 println("${empresa.getNome()} <3 ${it.getNome()}")
             }}
 

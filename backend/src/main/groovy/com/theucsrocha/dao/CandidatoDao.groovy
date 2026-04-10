@@ -42,10 +42,10 @@ class CandidatoDao{
         return candidatos
     }
 
-    Candidato findByCPF(String CPF){
+    Candidato findByCPF(String cpf){
         Candidato candidato
         String query = "SELECT * FROM CANDIDATO C WHERE C.CPF=?"
-        db.eachRow(query,{row->
+        db.eachRow(query,[cpf],{row->
             candidato = new Candidato(
                     nome: row.nome,
                     email: row.email,
@@ -57,11 +57,6 @@ class CandidatoDao{
             )
 
         })
-        if (candidato == null) {
-            println("Candidato não encontrado")
-            return null
-
-        }
         return candidato
 
     }
@@ -70,7 +65,11 @@ class CandidatoDao{
         String query = "INSERT INTO COMPETENCIA_CANDIDATO (ID_COMPETENCIA,CPF_CANDIDATO) VALUES (?,?)"
 
         competencias.forEach {competencia ->
-            db.executeInsert(query,[competenciaDao.findByNome(competencia).id,cpf])
+            def competenciaEncontrada = competenciaDao.findByNome(competencia)
+            if (competenciaEncontrada == null) {
+                throw new IllegalArgumentException("Competência não encontrada: ${competencia}")
+            }
+            db.executeInsert(query,[competenciaEncontrada.id,cpf])
         }
     }
 

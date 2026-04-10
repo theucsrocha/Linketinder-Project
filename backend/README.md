@@ -43,3 +43,19 @@ Nova Feature: Agora o sistema é integrado ao banco de dados
 Abaixo está a modelagem conceitual do banco de dados, desenvolvida utilizando a ferramenta **brModelo**.
 
 ![DER Linketinder](./Modelagem-Banco.png)
+
+
+
+
+
+Para a entrega de Clean Code:
+Criei services por entidade para separar melhor as responsabilidades.
+•
+Refatorei o Sistema para chamar apenas os services, reduzindo acoplamento.
+•
+Removi println dos DAOs e melhorei o tratamento de erros com exceções explícitas.
+•
+Troquei variáveis curtas por nomes mais claros e autoexplicativos.
+•
+Atualizei os testes para refletir a nova estrutura e validar erros.
+Com isso, o código ficou mais organizado, legível, testável e alinhado aos princípios de Clean Code.
