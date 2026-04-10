@@ -1,13 +1,17 @@
 package com.theucsrocha
 
-import groovy.sql.Sql
 import com.theucsrocha.entities.Candidato
 import com.theucsrocha.entities.Empresa
 import com.theucsrocha.entities.Sistema
 import com.theucsrocha.entities.Vaga
+import com.theucsrocha.repository.CandidatoRepository
+import com.theucsrocha.repository.EmpresaRepository
+import com.theucsrocha.repository.VagaRepository
 import com.theucsrocha.service.CandidatoService
 import com.theucsrocha.service.EmpresaService
 import com.theucsrocha.service.VagaService
+import com.theucsrocha.validator.CompetenciaValidator
+import groovy.sql.Sql
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -16,7 +20,7 @@ class TestesApp extends Specification {
 
     def "adicionar candidato delega persistencia e competencias ao dao"() {
         given:
-        def sistema = new Sistema(Stub(Sql))
+        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def candidatoService = Mock(CandidatoService)
         sistema.candidatoService = candidatoService
         def candidato = new Candidato(
@@ -39,7 +43,7 @@ class TestesApp extends Specification {
 
     def "adicionar empresa delega insercao ao dao"() {
         given:
-        def sistema = new Sistema(Stub(Sql))
+        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def empresaService = Mock(EmpresaService)
         sistema.empresaService = empresaService
         def empresa = new Empresa(
@@ -60,7 +64,7 @@ class TestesApp extends Specification {
 
     def "adicionar vaga usa o id retornado pela contagem do dao"() {
         given:
-        def sistema = new Sistema(Stub(Sql))
+        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def vagaService = Mock(VagaService)
         sistema.vagaService = vagaService
         def empresa = new Empresa(
@@ -88,7 +92,7 @@ class TestesApp extends Specification {
 
     def "buscar empresa por cnpj delega ao dao"() {
         given:
-        def sistema = new Sistema(Stub(Sql))
+        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def empresaService = Mock(EmpresaService)
         sistema.empresaService = empresaService
         def empresa = new Empresa(
@@ -110,7 +114,7 @@ class TestesApp extends Specification {
 
     def "buscar candidato por cpf delega ao dao"() {
         given:
-        def sistema = new Sistema(Stub(Sql))
+        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def candidatoService = Mock(CandidatoService)
         sistema.candidatoService = candidatoService
         def candidato = new Candidato(
@@ -134,7 +138,7 @@ class TestesApp extends Specification {
     def "close encerra a conexao com o banco"() {
         given:
         def sql = Mock(Sql)
-        def sistema = new Sistema(sql)
+        def sistema = new Sistema(sql, Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
 
         when:
         sistema.close()
@@ -145,8 +149,9 @@ class TestesApp extends Specification {
 
     def "adicionar candidato falha quando uma competencia nao existe"() {
         given:
-        def candidatoDao = Mock(com.theucsrocha.dao.CandidatoDao)
-        def service = new CandidatoService(candidatoDao)
+        def candidatoRepository = Mock(CandidatoRepository)
+        def competenciaValidator = Mock(CompetenciaValidator)
+        def service = new CandidatoService(candidatoRepository, competenciaValidator)
         def candidato = new Candidato(
                 nome: "Matheus",
                 email: "matheus@email.com",
@@ -161,18 +166,19 @@ class TestesApp extends Specification {
         service.adicionarCandidato(candidato, ["Java"])
 
         then:
-        1 * candidatoDao.inserir(candidato)
-        1 * candidatoDao.adicionarCompetenciasNoCandidato("12345678900", ["Java"]) >> {
+        1 * competenciaValidator.validarCompetenciasExistentes(["Java"]) >> {
             throw new IllegalArgumentException("Competência não encontrada: Java")
         }
+        0 * candidatoRepository._
         def erro = thrown(IllegalArgumentException)
         erro.message == "Competência não encontrada: Java"
     }
 
     def "adicionar vaga falha quando uma competencia nao existe"() {
         given:
-        def vagaDao = Mock(com.theucsrocha.dao.VagaDao)
-        def service = new VagaService(vagaDao)
+        def vagaRepository = Mock(VagaRepository)
+        def competenciaValidator = Mock(CompetenciaValidator)
+        def service = new VagaService(vagaRepository, competenciaValidator)
         def empresa = new Empresa(
                 nome: "PastelSoft",
                 email: "rh@pastelsoft.com",
@@ -192,12 +198,85 @@ class TestesApp extends Specification {
         service.adicionarVaga(vaga, ["Groovy"])
 
         then:
-        1 * vagaDao.inserir(vaga)
-        1 * vagaDao.contarVagas() >> 7
-        1 * vagaDao.adicionarCompetenciasNaVaga(7, ["Groovy"]) >> {
+        1 * competenciaValidator.validarCompetenciasExistentes(["Groovy"]) >> {
             throw new IllegalArgumentException("Competência não encontrada: Groovy")
         }
+        0 * vagaRepository._
         def erro = thrown(IllegalArgumentException)
         erro.message == "Competência não encontrada: Groovy"
+    }
+
+    def "adicionar candidato usa repositorio e validador injetados"() {
+        given:
+        def candidatoRepository = Mock(CandidatoRepository)
+        def competenciaValidator = Mock(CompetenciaValidator)
+        def service = new CandidatoService(candidatoRepository, competenciaValidator)
+        def candidato = new Candidato(
+                nome: "Matheus",
+                email: "matheus@email.com",
+                cpf: "12345678900",
+                dataNascimento: LocalDate.of(2000, 1, 1),
+                cep: "40000000",
+                descricaoPessoal: "Backend",
+                senha: "123456"
+        )
+
+        when:
+        service.adicionarCandidato(candidato, ["Java"])
+
+        then:
+        1 * competenciaValidator.validarCompetenciasExistentes(["Java"])
+        1 * candidatoRepository.inserir(candidato)
+        1 * candidatoRepository.adicionarCompetenciasNoCandidato("12345678900", ["Java"])
+    }
+
+    def "adicionar empresa usa repositorio injetado"() {
+        given:
+        def empresaRepository = Mock(EmpresaRepository)
+        def service = new EmpresaService(empresaRepository)
+        def empresa = new Empresa(
+                nome: "PastelSoft",
+                email: "rh@pastelsoft.com",
+                cnpj: "12345678000199",
+                descricao: "Software house",
+                cep: "40000000",
+                senha: "123456"
+        )
+
+        when:
+        service.adicionarEmpresa(empresa)
+
+        then:
+        1 * empresaRepository.inserir(empresa)
+    }
+
+    def "adicionar vaga usa repositorio e validador injetados"() {
+        given:
+        def vagaRepository = Mock(VagaRepository)
+        def competenciaValidator = Mock(CompetenciaValidator)
+        def service = new VagaService(vagaRepository, competenciaValidator)
+        def empresa = new Empresa(
+                nome: "PastelSoft",
+                email: "rh@pastelsoft.com",
+                cnpj: "12345678000199",
+                descricao: "Software house",
+                cep: "40000000",
+                senha: "123456"
+        )
+        def vaga = new Vaga(
+                nome: "Pessoa Desenvolvedora Groovy",
+                descricao: "Atuar no backend",
+                local: "Remoto",
+                empresa: empresa
+        )
+
+        when:
+        service.adicionarVaga(vaga, ["Groovy"])
+
+        then:
+        1 * competenciaValidator.validarCompetenciasExistentes(["Groovy"])
+        1 * vagaRepository.inserir(vaga)
+        1 * vagaRepository.contarVagas() >> 7
+        1 * vagaRepository.adicionarCompetenciasNaVaga(7, ["Groovy"])
     }
 }

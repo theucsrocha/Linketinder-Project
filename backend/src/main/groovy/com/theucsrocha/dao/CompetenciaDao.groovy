@@ -1,9 +1,10 @@
 package com.theucsrocha.dao
 
 import com.theucsrocha.entities.Competencia
+import com.theucsrocha.repository.CompetenciaRepository
 import groovy.sql.Sql
 
-class CompetenciaDao {
+class CompetenciaDao implements CompetenciaRepository {
     private Sql db
 
     CompetenciaDao(Sql connection) {

@@ -1,8 +1,9 @@
 package com.theucsrocha.dao
 import com.theucsrocha.entities.Empresa
+import com.theucsrocha.repository.EmpresaRepository
 import groovy.sql.Sql
 
-class EmpresaDao {
+class EmpresaDao implements EmpresaRepository {
     private Sql db
     EmpresaDao(Sql connection){
         this.db = connection

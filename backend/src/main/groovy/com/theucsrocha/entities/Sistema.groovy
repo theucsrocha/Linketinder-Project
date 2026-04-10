@@ -1,8 +1,8 @@
 package com.theucsrocha.entities
+import groovy.sql.Sql
 import com.theucsrocha.service.CandidatoService
 import com.theucsrocha.service.EmpresaService
 import com.theucsrocha.service.VagaService
-import groovy.sql.Sql
 
 class Sistema {
 
@@ -11,11 +11,11 @@ class Sistema {
     EmpresaService empresaService
     VagaService vagaService
 
-    Sistema(Sql connection){
+    Sistema(Sql connection, CandidatoService candidatoService, EmpresaService empresaService, VagaService vagaService){
         this.connectionDB = connection
-        candidatoService = new CandidatoService(connection)
-        empresaService = new EmpresaService(connection)
-        vagaService = new VagaService(connection)
+        this.candidatoService = candidatoService
+        this.empresaService = empresaService
+        this.vagaService = vagaService
     }
 
     boolean verificadorDeCompatibilidade(Empresa empresa,Candidato candidato){

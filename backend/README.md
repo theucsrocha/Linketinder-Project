@@ -59,3 +59,13 @@ Troquei variáveis curtas por nomes mais claros e autoexplicativos.
 •
 Atualizei os testes para refletir a nova estrutura e validar erros.
 Com isso, o código ficou mais organizado, legível, testável e alinhado aos princípios de Clean Code.
+
+Para a Entrega de SOLID
+•
+Criei interfaces para os DAOs, para o código depender de abstrações (DIP).
+•
+Fiz os services receberem dependências por construtor, reduzindo acoplamento (DIP).
+•
+Tirei a validação dos DAOs e criei o CompetenciaValidator, separando responsabilidades (SRP).
+•
+Ajustei o Sistema para usar services injetados, deixando ele mais focado em orquestração (SRP e DIP).

@@ -2,9 +2,10 @@ package com.theucsrocha.dao
 
 import com.theucsrocha.entities.Competencia
 import com.theucsrocha.entities.Vaga
+import com.theucsrocha.repository.VagaRepository
 import groovy.sql.Sql
 
-class VagaDao {
+class VagaDao implements VagaRepository {
     private Sql db
     private CompetenciaDao competenciaDao
     private EmpresaDao empresaDao
@@ -23,11 +24,7 @@ class VagaDao {
         String query = "INSERT INTO COMPETENCIA_VAGA (ID_VAGA,ID_COMPETENCIA) VALUES (?,?)"
 
         competencias.forEach {competencia ->
-            def competenciaEncontrada = competenciaDao.findByNome(competencia)
-            if (competenciaEncontrada == null) {
-                throw new IllegalArgumentException("Competência não encontrada: ${competencia}")
-            }
-            db.executeInsert(query,[vagaID,competenciaEncontrada.id])
+            db.executeInsert(query,[vagaID,competenciaDao.findByNome(competencia).id])
         }
     }
     int contarVagas() {

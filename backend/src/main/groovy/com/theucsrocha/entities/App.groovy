@@ -1,5 +1,13 @@
 package com.theucsrocha.entities
+import com.theucsrocha.dao.CandidatoDao
+import com.theucsrocha.dao.CompetenciaDao
+import com.theucsrocha.dao.EmpresaDao
+import com.theucsrocha.dao.VagaDao
+import com.theucsrocha.service.CandidatoService
+import com.theucsrocha.service.EmpresaService
+import com.theucsrocha.service.VagaService
 import com.theucsrocha.util.ConnectionFactory
+import com.theucsrocha.validator.CompetenciaValidator
 
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
@@ -13,7 +21,12 @@ class App {
         try {
             def sql = ConnectionFactory.create()
             println "Conectado com sucesso ao banco: " + sql.firstRow("SELECT current_database()")[0]
-            sistema = new Sistema(sql)
+            def competenciaRepository = new CompetenciaDao(sql)
+            def competenciaValidator = new CompetenciaValidator(competenciaRepository)
+            def candidatoService = new CandidatoService(new CandidatoDao(sql), competenciaValidator)
+            def empresaService = new EmpresaService(new EmpresaDao(sql))
+            def vagaService = new VagaService(new VagaDao(sql), competenciaValidator)
+            sistema = new Sistema(sql, candidatoService, empresaService, vagaService)
 
         } catch (Exception e) {
             println "Erro ao conectar: " + e.message

@@ -2,9 +2,10 @@ package com.theucsrocha.dao
 
 import com.theucsrocha.entities.Candidato
 import com.theucsrocha.entities.Competencia
+import com.theucsrocha.repository.CandidatoRepository
 import groovy.sql.Sql
 
-class CandidatoDao{
+class CandidatoDao implements CandidatoRepository {
     private Sql db
     private CompetenciaDao competenciaDao
 
@@ -65,11 +66,7 @@ class CandidatoDao{
         String query = "INSERT INTO COMPETENCIA_CANDIDATO (ID_COMPETENCIA,CPF_CANDIDATO) VALUES (?,?)"
 
         competencias.forEach {competencia ->
-            def competenciaEncontrada = competenciaDao.findByNome(competencia)
-            if (competenciaEncontrada == null) {
-                throw new IllegalArgumentException("Competência não encontrada: ${competencia}")
-            }
-            db.executeInsert(query,[competenciaEncontrada.id,cpf])
+            db.executeInsert(query,[competenciaDao.findByNome(competencia).id,cpf])
         }
     }
 
