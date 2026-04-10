@@ -1,32 +1,28 @@
 package com.theucsrocha.entities
-import com.theucsrocha.dao.CandidatoDao
-import com.theucsrocha.dao.CompetenciaDao
-import com.theucsrocha.dao.EmpresaDao
-import com.theucsrocha.dao.VagaDao
+import com.theucsrocha.service.CandidatoService
+import com.theucsrocha.service.EmpresaService
+import com.theucsrocha.service.VagaService
 import groovy.sql.Sql
 
 class Sistema {
 
-    private Sql connectionDB
-    CandidatoDao candidatoDao
-    EmpresaDao empresaDao
-    VagaDao vagaDao
-    CompetenciaDao competenciaDao
+    private final Sql connectionDB
+    CandidatoService candidatoService
+    EmpresaService empresaService
+    VagaService vagaService
 
     Sistema(Sql connection){
         this.connectionDB = connection
-        candidatoDao = new CandidatoDao(connection)
-        empresaDao = new EmpresaDao(connection)
-        vagaDao = new VagaDao(connection)
-        competenciaDao = new CompetenciaDao(connection)
-
+        candidatoService = new CandidatoService(connection)
+        empresaService = new EmpresaService(connection)
+        vagaService = new VagaService(connection)
     }
 
     boolean verificadorDeCompatibilidade(Empresa empresa,Candidato candidato){
         def competenciasDoCandidato = candidato.competencias*.nome ?: []
-        def competenciasDaVaga = vagaDao.getAllVagas()
+        def competenciasDaVaga = vagaService.listarVagas()
                 .findAll { it.empresa?.cnpj == empresa.cnpj }
-                .collectMany { vagaDao.getCompetenciasDaVagaPorId(it.id)*.nome }
+                .collectMany { it.competenciasExigidas*.nome ?: [] }
                 .unique()
         return competenciasDoCandidato.containsAll(competenciasDaVaga)
     }
@@ -43,55 +39,46 @@ class Sistema {
     }
 
     void adicionarCandidato(Candidato novoCandidato,List<String> competencias){
-        candidatoDao.inserir(novoCandidato)
-        candidatoDao.adicionarCompetenciasNoCandidato(novoCandidato.cpf,competencias)
+        candidatoService.adicionarCandidato(novoCandidato, competencias)
     }
 
    void adicionarEmpresa(Empresa novaEmpresa){
-      empresaDao.inserir(novaEmpresa)
+      empresaService.adicionarEmpresa(novaEmpresa)
    }
 
     void adicionarVaga(Vaga vaga,List<String> competenciasExigidas){
-        vagaDao.inserir(vaga)
-        int idVagaNova = vagaDao.contarVagas()
-        vagaDao.adicionarCompetenciasNaVaga(idVagaNova,competenciasExigidas)
-
-
+        vagaService.adicionarVaga(vaga, competenciasExigidas)
     }
 
     void listarCandidatos(){
-        candidatoDao.findAll().forEach {
-            it.competencias = candidatoDao.getCompetenciasDoCandidatoPorCpf(it.cpf)
-            println(it)}
+        candidatoService.listarCandidatos().forEach { println(it) }
     }
     void listarEmpresas(){
-        empresaDao.findAll().forEach {println(it)}
+        empresaService.listarEmpresas().forEach { println(it) }
     }
     void listarVagas(){
-        vagaDao.getAllVagas().forEach {
-            it.competenciasExigidas = vagaDao.getCompetenciasDaVagaPorId(it.id)
-            println(it) }
+        vagaService.listarVagas().forEach { println(it) }
     }
     void close(){
         connectionDB.close()
     }
 
     List<Empresa> getAllEmpresas(){
-        return empresaDao.findAll()
+        return empresaService.getAllEmpresas()
     }
     List<Candidato> getAllCandidatos(){
-        return candidatoDao.findAll()
+        return candidatoService.listarCandidatos()
     }
     List<Vaga> getAllVagas(){
-        return vagaDao.getAllVagas()
+        return vagaService.listarVagas()
     }
 
     Empresa getEmpresaByCNPJ(String cnpj){
-        return empresaDao.findByCNPJ(cnpj)
+        return empresaService.getEmpresaByCNPJ(cnpj)
     }
 
     Candidato getCandidatoByCPF(String cpf){
-        return candidatoDao.findByCPF(cpf)
+        return candidatoService.getCandidatoByCPF(cpf)
     }
 
 }
