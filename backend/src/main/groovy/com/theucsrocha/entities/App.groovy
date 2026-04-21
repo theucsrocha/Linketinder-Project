@@ -7,6 +7,7 @@ import com.theucsrocha.service.CandidatoService
 import com.theucsrocha.service.EmpresaService
 import com.theucsrocha.service.VagaService
 import com.theucsrocha.util.ConnectionFactory
+import com.theucsrocha.util.IConnectionFactory
 import com.theucsrocha.validator.CompetenciaValidator
 
 import java.time.LocalDate
@@ -19,8 +20,9 @@ class App {
         def leitorEntrada = System.in.newReader()
 
         try {
-            def sql = ConnectionFactory.create()
-            println "Conectado com sucesso ao banco: " + sql.firstRow("SELECT current_database()")[0]
+            IConnectionFactory connectionFactory = ConnectionFactory.create("postgres")
+            def sql = connectionFactory.getConnection()
+            println "Conectado com sucesso ao banco: " + sql.connection.metaData.databaseProductName
             def competenciaRepository = new CompetenciaDao(sql)
             def competenciaValidator = new CompetenciaValidator(competenciaRepository)
             def candidatoService = new CandidatoService(new CandidatoDao(sql), competenciaValidator)

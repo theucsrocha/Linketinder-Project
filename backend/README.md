@@ -18,8 +18,12 @@ Dentro da pasta do projeto:
 
 Execute esse comando:
 ```bash
-groovy src/com/theucsrocha/entities/App.groovy
+groovy src/main/groovy/com/theucsrocha/entities/App.groovy
 ```
+
+
+
+
 
 ❤️ Nova Feature: Sistema de Curtidas e Match
 
@@ -62,10 +66,52 @@ Com isso, o código ficou mais organizado, legível, testável e alinhado aos pr
 
 Para a Entrega de SOLID
 •
-Criei interfaces para os DAOs, para o código depender de abstrações (DIP).
+Criei interfaces para os DAOs, para o código depender de abstrações .
 •
-Fiz os services receberem dependências por construtor, reduzindo acoplamento (DIP).
+Fiz os services receberem dependências por construtor, reduzindo acoplamento .
 •
-Tirei a validação dos DAOs e criei o CompetenciaValidator, separando responsabilidades (SRP).
+Tirei a validação dos DAOs e criei o CompetenciaValidator, separando responsabilidades .
 •
-Ajustei o Sistema para usar services injetados, deixando ele mais focado em orquestração (SRP e DIP).
+Ajustei o Sistema para usar services injetados, deixando ele mais focado em orquestração .
+
+## Design Patterns aplicados
+
+### 1. Factory Method
+Criei uma fábrica real de conexões em [ConnectionFactory.groovy](/home/linux/IdeaProjects/Linketinder/backend/src/main/groovy/com/theucsrocha/util/ConnectionFactory.groovy:1), responsável por escolher a implementação correta conforme o banco configurado.
+
+A implementação concreta é:
+- `PostgresConnectionFactory`
+
+
+Melhoria prática:
+- a aplicação deixou de ficar presa a um único banco hardcoded;
+- a troca do banco passou a acontecer por configuração, sem alterar os DAOs ou services;
+- a criação da conexão ficou centralizada e mais fácil de manter.
+
+### 2. Singleton
+Cada fábrica concreta mantém uma única instância de `Sql` durante a execução:
+- [PostgresConnectionFactory.groovy](/home/linux/IdeaProjects/Linketinder/backend/src/main/groovy/com/theucsrocha/util/PostgresConnectionFactory.groovy:1)
+
+
+Melhoria prática:
+- evita recriar conexões desnecessariamente;
+- centraliza o ciclo de vida da conexão;
+- reduz duplicação no ponto de acesso ao banco.
+
+### 3. Repository
+Os contratos de persistência foram separados em interfaces no pacote `repository`, e os DAOs passaram a implementá-los.
+
+Melhoria prática:
+- prepara a aplicação para futuras trocas de tecnologia de acesso a dados.
+
+### 4. Service Layer
+As regras de negócio e a orquestração de uso dos repositórios ficaram nos services.
+
+
+### 5. Dependency Injection
+Os services recebem dependências pelo construtor em vez de criarem suas dependências internamente.
+
+Melhoria prática:
+- reduz acoplamento;
+- facilita testes unitários com mocks;
+- torna as classes mais flexíveis para evolução.

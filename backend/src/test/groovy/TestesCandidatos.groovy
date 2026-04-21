@@ -10,6 +10,9 @@ import com.theucsrocha.repository.VagaRepository
 import com.theucsrocha.service.CandidatoService
 import com.theucsrocha.service.EmpresaService
 import com.theucsrocha.service.VagaService
+import com.theucsrocha.util.ConnectionFactory
+
+import com.theucsrocha.util.PostgresConnectionFactory
 import com.theucsrocha.validator.CompetenciaValidator
 import groovy.sql.Sql
 import spock.lang.Specification
@@ -17,6 +20,31 @@ import spock.lang.Specification
 import java.time.LocalDate
 
 class TestesApp extends Specification {
+
+    def "factory retorna implementacao postgres quando banco informado for postgres"() {
+        when:
+        def connectionFactory = ConnectionFactory.create("postgres")
+
+        then:
+        connectionFactory instanceof PostgresConnectionFactory
+    }
+
+    def "factory retorna implementacao mysql quando banco informado for mysql"() {
+        when:
+        def connectionFactory = ConnectionFactory.create("mysql")
+
+        then:
+        connectionFactory instanceof MySqlConnectionFactory
+    }
+
+    def "factory falha quando banco informado nao for suportado"() {
+        when:
+        ConnectionFactory.create("oracle")
+
+        then:
+        def erro = thrown(IllegalArgumentException)
+        erro.message == "Banco não suportado: oracle"
+    }
 
     def "adicionar candidato delega persistencia e competencias ao dao"() {
         given:
