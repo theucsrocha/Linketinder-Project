@@ -1,6 +1,6 @@
-package com.theucsrocha.dao
+package com.theucsrocha.model.dao
 
-import com.theucsrocha.entities.Candidato
+import com.theucsrocha.model.entities.Candidato
 import com.theucsrocha.entities.Competencia
 import com.theucsrocha.repository.CandidatoRepository
 import groovy.sql.Sql

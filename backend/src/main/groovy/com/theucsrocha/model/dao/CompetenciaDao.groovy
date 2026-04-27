@@ -1,4 +1,4 @@
-package com.theucsrocha.dao
+package com.theucsrocha.model.dao
 
 import com.theucsrocha.entities.Competencia
 import com.theucsrocha.repository.CompetenciaRepository

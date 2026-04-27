@@ -1,4 +1,4 @@
-package com.theucsrocha.util
+package com.theucsrocha.model.util
 
 import groovy.sql.Sql
 

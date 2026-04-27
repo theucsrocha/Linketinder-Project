@@ -1,4 +1,4 @@
-package com.theucsrocha.service
+package com.theucsrocha.model.service
 
 import com.theucsrocha.entities.Empresa
 import com.theucsrocha.repository.EmpresaRepository

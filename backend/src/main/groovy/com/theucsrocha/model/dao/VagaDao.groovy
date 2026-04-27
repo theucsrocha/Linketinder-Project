@@ -1,7 +1,7 @@
-package com.theucsrocha.dao
+package com.theucsrocha.model.dao
 
-import com.theucsrocha.entities.Competencia
-import com.theucsrocha.entities.Vaga
+import com.theucsrocha.model.entities.Competencia
+import com.theucsrocha.model.entities.Vaga
 import com.theucsrocha.repository.VagaRepository
 import groovy.sql.Sql
 

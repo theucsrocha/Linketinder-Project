@@ -1,4 +1,4 @@
-package com.theucsrocha.entities
+package com.theucsrocha.model.entities
 @groovy.transform.TupleConstructor
 class Empresa {
     String nome

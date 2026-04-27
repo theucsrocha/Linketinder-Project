@@ -1,6 +1,6 @@
-package com.theucsrocha.service
+package com.theucsrocha.model.service
 
-import com.theucsrocha.entities.Candidato
+import com.theucsrocha.model.entities.Candidato
 import com.theucsrocha.repository.CandidatoRepository
 import com.theucsrocha.validator.CompetenciaValidator
 

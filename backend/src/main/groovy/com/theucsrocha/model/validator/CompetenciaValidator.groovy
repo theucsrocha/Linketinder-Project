@@ -1,4 +1,4 @@
-package com.theucsrocha.validator
+package com.theucsrocha.model.validator
 
 import com.theucsrocha.repository.CompetenciaRepository
 

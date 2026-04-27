@@ -1,4 +1,4 @@
-package com.theucsrocha.entities
+package com.theucsrocha.model.entities
 import java.time.LocalDate
 
 trait IPessoa {

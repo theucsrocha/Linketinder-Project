@@ -1,4 +1,4 @@
-package com.theucsrocha.entities
+package com.theucsrocha.model.entities
 class Vaga{
     Integer id
     String nome

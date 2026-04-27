@@ -1,8 +1,12 @@
-package com.theucsrocha.entities
+package com.theucsrocha.controller
+
+import com.theucsrocha.model.entities.Candidato
+import com.theucsrocha.model.entities.Empresa
+import com.theucsrocha.model.entities.Vaga
 import groovy.sql.Sql
-import com.theucsrocha.service.CandidatoService
-import com.theucsrocha.service.EmpresaService
-import com.theucsrocha.service.VagaService
+import com.theucsrocha.model.service.CandidatoService
+import com.theucsrocha.model.service.EmpresaService
+import com.theucsrocha.model.service.VagaService
 
 class Sistema {
 
@@ -18,7 +22,7 @@ class Sistema {
         this.vagaService = vagaService
     }
 
-    boolean verificadorDeCompatibilidade(Empresa empresa,Candidato candidato){
+    boolean verificadorDeCompatibilidade(Empresa empresa, Candidato candidato){
         def competenciasDoCandidato = candidato.competencias*.nome ?: []
         def competenciasDaVaga = vagaService.listarVagas()
                 .findAll { it.empresa?.cnpj == empresa.cnpj }
@@ -46,7 +50,7 @@ class Sistema {
       empresaService.adicionarEmpresa(novaEmpresa)
    }
 
-    void adicionarVaga(Vaga vaga,List<String> competenciasExigidas){
+    void adicionarVaga(Vaga vaga, List<String> competenciasExigidas){
         vagaService.adicionarVaga(vaga, competenciasExigidas)
     }
 
@@ -69,9 +73,7 @@ class Sistema {
     List<Candidato> getAllCandidatos(){
         return candidatoService.listarCandidatos()
     }
-    List<Vaga> getAllVagas(){
-        return vagaService.listarVagas()
-    }
+
 
     Empresa getEmpresaByCNPJ(String cnpj){
         return empresaService.getEmpresaByCNPJ(cnpj)

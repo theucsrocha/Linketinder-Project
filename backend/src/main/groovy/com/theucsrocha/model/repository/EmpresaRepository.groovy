@@ -1,6 +1,6 @@
-package com.theucsrocha.repository
+package com.theucsrocha.model.repository
 
-import com.theucsrocha.entities.Empresa
+import com.theucsrocha.model.entities.Empresa
 
 interface EmpresaRepository {
     void inserir(Empresa empresa)

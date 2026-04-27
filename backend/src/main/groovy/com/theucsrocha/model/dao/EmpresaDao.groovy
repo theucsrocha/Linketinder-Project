@@ -1,4 +1,4 @@
-package com.theucsrocha.dao
+package com.theucsrocha.model.dao
 import com.theucsrocha.entities.Empresa
 import com.theucsrocha.repository.EmpresaRepository
 import groovy.sql.Sql

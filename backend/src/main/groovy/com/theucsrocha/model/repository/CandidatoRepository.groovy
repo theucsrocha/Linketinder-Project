@@ -1,7 +1,7 @@
-package com.theucsrocha.repository
+package com.theucsrocha.model.repository
 
-import com.theucsrocha.entities.Candidato
-import com.theucsrocha.entities.Competencia
+import com.theucsrocha.model.entities.Candidato
+import com.theucsrocha.model.entities.Competencia
 
 interface CandidatoRepository {
     void inserir(Candidato candidato)

@@ -1,6 +1,6 @@
-package com.theucsrocha.repository
+package com.theucsrocha.model.repository
 
-import com.theucsrocha.entities.Competencia
+import com.theucsrocha.model.entities.Competencia
 
 interface CompetenciaRepository {
     void inserir(Competencia competencia)

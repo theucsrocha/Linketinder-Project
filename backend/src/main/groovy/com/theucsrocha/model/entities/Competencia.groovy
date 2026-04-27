@@ -1,4 +1,4 @@
-package com.theucsrocha.entities
+package com.theucsrocha.model.entities
 class Competencia{
     Integer id
     String nome

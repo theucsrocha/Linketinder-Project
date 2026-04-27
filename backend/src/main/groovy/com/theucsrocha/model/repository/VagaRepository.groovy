@@ -1,7 +1,7 @@
-package com.theucsrocha.repository
+package com.theucsrocha.model.repository
 
-import com.theucsrocha.entities.Competencia
-import com.theucsrocha.entities.Vaga
+import com.theucsrocha.model.entities.Competencia
+import com.theucsrocha.model.entities.Vaga
 
 interface VagaRepository {
     void inserir(Vaga vaga)
