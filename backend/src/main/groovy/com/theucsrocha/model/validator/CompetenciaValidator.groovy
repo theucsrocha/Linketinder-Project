@@ -1,6 +1,6 @@
 package com.theucsrocha.model.validator
 
-import com.theucsrocha.repository.CompetenciaRepository
+import com.theucsrocha.model.repository.CompetenciaRepository
 
 class CompetenciaValidator {
 

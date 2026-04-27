@@ -1,7 +1,7 @@
 package com.theucsrocha.model.service
 
-import com.theucsrocha.entities.Empresa
-import com.theucsrocha.repository.EmpresaRepository
+import com.theucsrocha.model.entities.Empresa
+import com.theucsrocha.model.repository.EmpresaRepository
 
 class EmpresaService {
 

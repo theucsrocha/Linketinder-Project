@@ -1,19 +1,21 @@
 package com.theucsrocha
 
-import com.theucsrocha.entities.Candidato
-import com.theucsrocha.entities.Empresa
-import com.theucsrocha.entities.Sistema
-import com.theucsrocha.entities.Vaga
-import com.theucsrocha.repository.CandidatoRepository
-import com.theucsrocha.repository.EmpresaRepository
-import com.theucsrocha.repository.VagaRepository
-import com.theucsrocha.service.CandidatoService
-import com.theucsrocha.service.EmpresaService
-import com.theucsrocha.service.VagaService
-import com.theucsrocha.util.ConnectionFactory
-
-import com.theucsrocha.util.PostgresConnectionFactory
-import com.theucsrocha.validator.CompetenciaValidator
+import com.theucsrocha.controller.CandidatoController
+import com.theucsrocha.controller.EmpresaController
+import com.theucsrocha.controller.Sistema
+import com.theucsrocha.controller.VagaController
+import com.theucsrocha.model.entities.Candidato
+import com.theucsrocha.model.entities.Empresa
+import com.theucsrocha.model.entities.Vaga
+import com.theucsrocha.model.repository.CandidatoRepository
+import com.theucsrocha.model.repository.EmpresaRepository
+import com.theucsrocha.model.repository.VagaRepository
+import com.theucsrocha.model.service.CandidatoService
+import com.theucsrocha.model.service.EmpresaService
+import com.theucsrocha.model.service.VagaService
+import com.theucsrocha.model.util.ConnectionFactory
+import com.theucsrocha.model.util.PostgresConnectionFactory
+import com.theucsrocha.model.validator.CompetenciaValidator
 import groovy.sql.Sql
 import spock.lang.Specification
 
@@ -29,14 +31,6 @@ class TestesApp extends Specification {
         connectionFactory instanceof PostgresConnectionFactory
     }
 
-    def "factory retorna implementacao mysql quando banco informado for mysql"() {
-        when:
-        def connectionFactory = ConnectionFactory.create("mysql")
-
-        then:
-        connectionFactory instanceof MySqlConnectionFactory
-    }
-
     def "factory falha quando banco informado nao for suportado"() {
         when:
         ConnectionFactory.create("oracle")
@@ -46,11 +40,10 @@ class TestesApp extends Specification {
         erro.message == "Banco não suportado: oracle"
     }
 
-    def "adicionar candidato delega persistencia e competencias ao dao"() {
+    def "candidato controller delega cadastro ao service"() {
         given:
-        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def candidatoService = Mock(CandidatoService)
-        sistema.candidatoService = candidatoService
+        def controller = new CandidatoController(candidatoService)
         def candidato = new Candidato(
                 nome: "Matheus",
                 email: "matheus@email.com",
@@ -63,17 +56,16 @@ class TestesApp extends Specification {
         def competencias = ["Java", "Spring"]
 
         when:
-        sistema.adicionarCandidato(candidato, competencias)
+        controller.adicionarCandidato(candidato, competencias)
 
         then:
         1 * candidatoService.adicionarCandidato(candidato, competencias)
     }
 
-    def "adicionar empresa delega insercao ao dao"() {
+    def "empresa controller delega cadastro ao service"() {
         given:
-        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def empresaService = Mock(EmpresaService)
-        sistema.empresaService = empresaService
+        def controller = new EmpresaController(empresaService)
         def empresa = new Empresa(
                 nome: "PastelSoft",
                 email: "rh@pastelsoft.com",
@@ -84,17 +76,16 @@ class TestesApp extends Specification {
         )
 
         when:
-        sistema.adicionarEmpresa(empresa)
+        controller.adicionarEmpresa(empresa)
 
         then:
         1 * empresaService.adicionarEmpresa(empresa)
     }
 
-    def "adicionar vaga usa o id retornado pela contagem do dao"() {
+    def "vaga controller delega cadastro ao service"() {
         given:
-        def sistema = new Sistema(Stub(Sql), Mock(CandidatoService), Mock(EmpresaService), Mock(VagaService))
         def vagaService = Mock(VagaService)
-        sistema.vagaService = vagaService
+        def controller = new VagaController(vagaService)
         def empresa = new Empresa(
                 nome: "PastelSoft",
                 email: "rh@pastelsoft.com",
@@ -112,7 +103,7 @@ class TestesApp extends Specification {
         def competencias = ["Groovy", "PostgreSQL"]
 
         when:
-        sistema.adicionarVaga(vaga, competencias)
+        controller.adicionarVaga(vaga, competencias)
 
         then:
         1 * vagaService.adicionarVaga(vaga, competencias)

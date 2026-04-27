@@ -1,8 +1,8 @@
 package com.theucsrocha.model.service
 
 import com.theucsrocha.model.entities.Vaga
-import com.theucsrocha.repository.VagaRepository
-import com.theucsrocha.validator.CompetenciaValidator
+import com.theucsrocha.model.repository.VagaRepository
+import com.theucsrocha.model.validator.CompetenciaValidator
 
 class VagaService {
 

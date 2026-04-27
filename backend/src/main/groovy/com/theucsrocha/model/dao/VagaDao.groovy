@@ -2,7 +2,7 @@ package com.theucsrocha.model.dao
 
 import com.theucsrocha.model.entities.Competencia
 import com.theucsrocha.model.entities.Vaga
-import com.theucsrocha.repository.VagaRepository
+import com.theucsrocha.model.repository.VagaRepository
 import groovy.sql.Sql
 
 class VagaDao implements VagaRepository {

@@ -1,8 +1,8 @@
 package com.theucsrocha.model.service
 
 import com.theucsrocha.model.entities.Candidato
-import com.theucsrocha.repository.CandidatoRepository
-import com.theucsrocha.validator.CompetenciaValidator
+import com.theucsrocha.model.repository.CandidatoRepository
+import com.theucsrocha.model.validator.CompetenciaValidator
 
 class CandidatoService {
 

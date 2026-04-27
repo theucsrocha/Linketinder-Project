@@ -1,8 +1,8 @@
 package com.theucsrocha.model.dao
 
 import com.theucsrocha.model.entities.Candidato
-import com.theucsrocha.entities.Competencia
-import com.theucsrocha.repository.CandidatoRepository
+import com.theucsrocha.model.entities.Competencia
+import com.theucsrocha.model.repository.CandidatoRepository
 import groovy.sql.Sql
 
 class CandidatoDao implements CandidatoRepository {

@@ -1,6 +1,6 @@
 package com.theucsrocha.model.dao
-import com.theucsrocha.entities.Empresa
-import com.theucsrocha.repository.EmpresaRepository
+import com.theucsrocha.model.entities.Empresa
+import com.theucsrocha.model.repository.EmpresaRepository
 import groovy.sql.Sql
 
 class EmpresaDao implements EmpresaRepository {

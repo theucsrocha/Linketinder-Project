@@ -1,7 +1,7 @@
 package com.theucsrocha.model.dao
 
-import com.theucsrocha.entities.Competencia
-import com.theucsrocha.repository.CompetenciaRepository
+import com.theucsrocha.model.entities.Competencia
+import com.theucsrocha.model.repository.CompetenciaRepository
 import groovy.sql.Sql
 
 class CompetenciaDao implements CompetenciaRepository {

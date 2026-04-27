@@ -1,4 +1,8 @@
 package com.theucsrocha.view
+
+import com.theucsrocha.controller.CandidatoController
+import com.theucsrocha.controller.EmpresaController
+import com.theucsrocha.controller.VagaController
 import com.theucsrocha.model.dao.CandidatoDao
 import com.theucsrocha.model.dao.CompetenciaDao
 import com.theucsrocha.model.dao.EmpresaDao
@@ -20,6 +24,9 @@ import java.time.format.DateTimeParseException
 class App {
     static void main(String[] ignoredArgs) {
         Sistema sistema
+        CandidatoController candidatoController
+        EmpresaController empresaController
+        VagaController vagaController
         def opcaoSelecionada = 0
         def leitorEntrada = System.in.newReader()
 
@@ -32,11 +39,17 @@ class App {
             def candidatoService = new CandidatoService(new CandidatoDao(sql), competenciaValidator)
             def empresaService = new EmpresaService(new EmpresaDao(sql))
             def vagaService = new VagaService(new VagaDao(sql), competenciaValidator)
+            candidatoController = new CandidatoController(candidatoService)
+            empresaController = new EmpresaController(empresaService)
+            vagaController = new VagaController(vagaService)
             sistema = new Sistema(sql, candidatoService, empresaService, vagaService)
 
         } catch (Exception e) {
             println "Erro ao conectar: " + e.message
             sistema = null
+            candidatoController = null
+            empresaController = null
+            vagaController = null
         }
 
         println("Seja bem vindo ao LinkerTinder!")
@@ -65,17 +78,17 @@ class App {
 
             switch (opcaoSelecionada){
                 case 1:
-                   sistema.listarCandidatos()
+                   candidatoController.listarCandidatos()
                     break
 
                 case 2:
-                    sistema.listarEmpresas()
+                    empresaController.listarEmpresas()
                     break
 
                 case 3:
-                    sistema.getAllEmpresas().each { empresa ->
+                    empresaController.getAllEmpresas().each { empresa ->
                         println("Candidatos compativeis com a empresa ${empresa.nome}:")
-                        sistema.getAllCandidatos().each { candidato ->
+                        candidatoController.getAllCandidatos().each { candidato ->
                             if (sistema.verificadorDeCompatibilidade(empresa, candidato)) {
                                 println(candidato.getNome())
                             }
@@ -86,12 +99,12 @@ class App {
                 case 4:
                     println("Digite o cpf do Canditato:")
                     def cpfCandidato = leitorEntrada.readLine()
-                    Candidato candidato = sistema.getCandidatoByCPF(cpfCandidato)
+                    Candidato candidato = candidatoController.getCandidatoByCPF(cpfCandidato)
                     if (candidato == null) { println("Candidato não encontrado"); break }
 
                     println("Digite o cnpj da empresa:")
                     def cnpjEmpresa = leitorEntrada.readLine()
-                    Empresa empresa = sistema.getEmpresaByCNPJ(cnpjEmpresa)
+                    Empresa empresa = empresaController.getEmpresaByCNPJ(cnpjEmpresa)
                     if (empresa == null) { println("Empresa não encontrada"); break }
 
                     candidato.curtirEmpresa(empresa)
@@ -101,12 +114,12 @@ class App {
                 case 5:
                     println("Digite o cnpj da Empresa:")
                     def cnpjEmpresa = leitorEntrada.readLine()
-                    Empresa empresa = sistema.getEmpresaByCNPJ(cnpjEmpresa)
+                    Empresa empresa = empresaController.getEmpresaByCNPJ(cnpjEmpresa)
                     if (empresa == null) { println("Empresa não encontrada"); break }
 
                     println("Digite o cpf do Candidato:")
                     def cpfCandidato = leitorEntrada.readLine()
-                    Candidato candidato = sistema.getCandidatoByCPF(cpfCandidato)
+                    Candidato candidato = candidatoController.getCandidatoByCPF(cpfCandidato)
                     if (candidato == null) { println("Candidato não encontrado"); break }
 
                     empresa.curtirCandidato(candidato)
@@ -114,7 +127,7 @@ class App {
                     break
 
                 case 6:
-                    sistema.listarMatches(sistema.getAllEmpresas(),sistema.getAllCandidatos())
+                    sistema.listarMatches(empresaController.getAllEmpresas(),candidatoController.getAllCandidatos())
                     break
 
                 case 7:
@@ -140,7 +153,7 @@ class App {
                                 descricaoPessoal: descricaoPessoal,
                                 senha: senhaCandidato
                         )
-                        sistema.adicionarCandidato(novoCandidato, competenciasCandidato)
+                        candidatoController.adicionarCandidato(novoCandidato, competenciasCandidato)
                         println("Candidato adicionado com sucesso!")
                     } catch (DateTimeParseException ex) {
                         println("Data inválida. Use o formato yyyy-MM-dd.")
@@ -167,7 +180,7 @@ class App {
                                 cep: cepEmpresa,
                                 senha: senhaEmpresa
                         )
-                        sistema.adicionarEmpresa(novaEmpresa)
+                        empresaController.adicionarEmpresa(novaEmpresa)
                         println("Empresa adicionada com sucesso!")
                     } catch (IllegalArgumentException ex) {
                         println("Erro ao adicionar: ${ex.message}")
@@ -183,7 +196,7 @@ class App {
                     print("Competências exigidas (separe por vírgula): ")
                     def competenciasVaga = leitorEntrada.readLine().split(",").collect { it.trim() }.findAll { !it.isBlank() }
 
-                    Empresa empresaDaVaga = sistema.getEmpresaByCNPJ(cnpjVaga)
+                    Empresa empresaDaVaga = empresaController.getEmpresaByCNPJ(cnpjVaga)
                     if (empresaDaVaga == null) {
                         println("Empresa não encontrada")
                         break
@@ -196,7 +209,7 @@ class App {
                                 local: localVaga,
                                 empresa: empresaDaVaga
                         )
-                        sistema.adicionarVaga(vagaNova, competenciasVaga)
+                        vagaController.adicionarVaga(vagaNova, competenciasVaga)
                         println("Vaga adicionada com sucesso!")
                     } catch (IllegalArgumentException ex) {
                         println("Erro ao adicionar: ${ex.message}")
@@ -204,7 +217,7 @@ class App {
                     break
 
                 case 10:
-                    sistema.listarVagas()
+                    vagaController.listarVagas()
                     break
 
                 case 11:

@@ -37,50 +37,16 @@ class Sistema {
             candidatos.each {if (it.getEmpresasCurtidas().contains(empresa) && empresa.candidatoesCurtidos.contains(it)){
                 println("${empresa.getNome()} <3 ${it.getNome()}")
             }}
-
-
         }
     }
 
-    void adicionarCandidato(Candidato novoCandidato,List<String> competencias){
-        candidatoService.adicionarCandidato(novoCandidato, competencias)
-    }
-
-   void adicionarEmpresa(Empresa novaEmpresa){
-      empresaService.adicionarEmpresa(novaEmpresa)
-   }
-
-    void adicionarVaga(Vaga vaga, List<String> competenciasExigidas){
-        vagaService.adicionarVaga(vaga, competenciasExigidas)
-    }
-
-    void listarCandidatos(){
-        candidatoService.listarCandidatos().forEach { println(it) }
-    }
-    void listarEmpresas(){
-        empresaService.listarEmpresas().forEach { println(it) }
-    }
-    void listarVagas(){
-        vagaService.listarVagas().forEach { println(it) }
-    }
     void close(){
         connectionDB.close()
     }
 
-    List<Empresa> getAllEmpresas(){
-        return empresaService.getAllEmpresas()
-    }
-    List<Candidato> getAllCandidatos(){
-        return candidatoService.listarCandidatos()
-    }
 
 
-    Empresa getEmpresaByCNPJ(String cnpj){
-        return empresaService.getEmpresaByCNPJ(cnpj)
-    }
 
-    Candidato getCandidatoByCPF(String cpf){
-        return candidatoService.getCandidatoByCPF(cpf)
-    }
+
 
 }
