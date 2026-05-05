@@ -8,22 +8,26 @@ import com.sun.net.httpserver.HttpHandler
 import com.theucsrocha.model.entities.Candidato
 import com.theucsrocha.model.service.CandidatoService
 
+import java.time.LocalDate
+
 class CandidatoController implements HttpHandler {
 
     private final CandidatoService candidatoService
 
     @Override
     void handle(HttpExchange exchange) throws IOException {
-        def metodo = exchange.requestMethod
-
         try {
-            if (metodo == "POST"){
-                adicionarCandidato(exchange)}
-            else if (metodo == "GET"){
+            def metodo = exchange.requestMethod
+            if (metodo == "POST") {
+                adicionarCandidato(exchange)
+            } else if (metodo == "GET") {
                 getAllCandidatos(exchange)
+            } else {
+                Server.enviarResposta(exchange, 405, [erro: "Metodo nao permitido"])
             }
-        }catch (e){
-            e.stackTrace
+        } catch (Exception e) {
+            e.printStackTrace()
+            Server.enviarResposta(exchange, 500, [erro: "Erro interno: ${e.message}"])
         }
     }
 
@@ -39,7 +43,7 @@ class CandidatoController implements HttpHandler {
                 nome: dados.nome,
                 email: dados.email,
                 cpf: dados.cpf,
-                dataNascimento: dados.dataNascimento,
+                dataNascimento: LocalDate.parse(dados.dataNascimento),
                 cep: dados.cep,
                 descricaoPessoal: dados.descricaoPessoal,
                 senha: dados.senha

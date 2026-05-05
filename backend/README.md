@@ -115,3 +115,52 @@ Melhoria prática:
 - reduz acoplamento;
 - facilita testes unitários com mocks;
 - torna as classes mais flexíveis para evolução.
+
+
+
+
+Agora é possivel realizar requisições por meio de endpoints:
+Exemplos de comandos para realizar pelo terminal:
+
+
+Adiconar vaga:
+curl -X POST http://localhost:8080/api/vagas \
+-H "Content-Type: application/json" \
+-d '{
+"nome": "Desenvolvedor Backend Junior",
+"descricao": "Vaga para atuar com Java e Groovy",
+"local": "Salvador/BA",
+"competencias": ["Java", "Spring"],
+"empresa": "1223343434"
+}'
+
+Adiconar empresa:
+curl -X POST http://localhost:8080/api/empresas \
+-H "Content-Type: application/json" \
+-d '{
+"nome": "Google Salvador",
+"email": "rh@google.com",
+"cnpj": "12345678000199",
+"descricao": "Empresa de tecnologia",
+"cep": "41000123",
+"senha": "admin"
+}'
+
+Adicionar candidado:
+curl -X POST http://localhost:8080/api/candidatos \
+-H "Content-Type: application/json" \
+-d '{
+"nome": "Matheus Rocha",
+"email": "matheus@linketinder.com",
+"cpf": "00011122233",
+"dataNascimento": "2000-01-01",
+"cep": "41000000",
+"descricaoPessoal": "Estudante de ADS e dev Java",
+"senha": "123",
+"competencias": ["Java", "Groovy", "SQL"]
+}'
+
+
+Para listar todos os registros,basta utilizar o comando:
+curl http://localhost:8080/api/candidatos
+Seguindo a mesma logica para todas as entidades

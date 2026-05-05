@@ -22,7 +22,7 @@ class Server {
         def server = HttpServer.create(new InetSocketAddress(port), 0)
 
         try {
-            // Reutilizando a sua lógica de conexão e serviços
+
             def connectionFactory = ConnectionFactory.create("postgres")
             def sql = connectionFactory.getConnection()
 
@@ -33,16 +33,17 @@ class Server {
             def empresaService = new EmpresaService(new EmpresaDao(sql))
             def vagaService = new VagaService(new VagaDao(sql), competenciaValidator)
 
-            // Registrando os seus Controllers como Endpoints
+
             server.createContext("/api/candidatos", new CandidatoController(candidatoService))
             server.createContext("/api/empresas", new EmpresaController(empresaService))
+            server.createContext("/api/vagas", new VagaController(vagaService,empresaService))
 
             server.start()
-            println "🚀 Servidor Web rodando na porta ${port}"
-            println "Endpoints disponíveis: /api/candidatos, /api/vagas"
+            println "Servidor Web rodando na porta ${port}"
+            println "Endpoints disponíveis: /api/candidatos, /api/vagas, /api/empresas"
 
         } catch (Exception e) {
-            println "❌ Erro ao iniciar o servidor: " + e.message
+            println "Erro ao iniciar o servidor: " + e.message
         }
     }
 
