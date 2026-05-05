@@ -144,7 +144,7 @@ class App {
 
                     try {
                         def dataNascimento = LocalDate.parse(dataNascimentoTexto)
-                        def novoCandidato = new Candidato(
+                        Candidato novoCandidato = new Candidato(
                                 nome: nomeCandidato,
                                 email: emailCandidato,
                                 cpf: cpfCandidato,
