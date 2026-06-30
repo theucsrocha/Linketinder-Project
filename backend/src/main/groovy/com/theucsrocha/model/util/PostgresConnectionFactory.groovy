@@ -11,7 +11,7 @@ class PostgresConnectionFactory implements IConnectionFactory {
     Sql getConnection() {
         try {
             if (instance == null) {
-                instance = Sql.newInstance("jdbc:postgresql://localhost:5432/Linketinder", "postgres", "1234", "org.postgresql.Driver")
+                instance = Sql.newInstance("jdbc:postgresql://postgres-db:5432/linketinder", "postgres", "1234", "org.postgresql.Driver")
             }
         } catch (SQLException e) {
             throw new IllegalStateException("Erro ao conectar no PostgreSQL: ${e.message}", e)

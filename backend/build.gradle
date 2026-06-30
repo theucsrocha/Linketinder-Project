@@ -11,11 +11,9 @@ repositories {
 }
 
 dependencies {
-    // Groovy e SQL
     implementation 'org.apache.groovy:groovy:4.0.12'
     implementation 'org.apache.groovy:groovy-sql:4.0.12'
 
-    // Driver do Postgres (Não precisa mais do .jar na pasta lib!)
     implementation 'org.postgresql:postgresql:42.7.2'
     implementation 'com.mysql:mysql-connector-j:9.3.0'
     implementation 'org.apache.groovy:groovy-json:4.0.0'
@@ -32,5 +30,5 @@ test {
 }
 
 application {
-    mainClass = 'com.theucsrocha.entities.App'
+    mainClass = 'com.theucsrocha.Server'
 }

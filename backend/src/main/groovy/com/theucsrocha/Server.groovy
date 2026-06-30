@@ -9,12 +9,15 @@ import com.theucsrocha.model.dao.CandidatoDao
 import com.theucsrocha.model.dao.CompetenciaDao
 import com.theucsrocha.model.dao.EmpresaDao
 import com.theucsrocha.model.dao.VagaDao
+import com.theucsrocha.model.repository.CompetenciaRepository
 import com.theucsrocha.model.service.CandidatoService
 import com.theucsrocha.model.service.EmpresaService
 import com.theucsrocha.model.service.VagaService
 import com.theucsrocha.model.util.ConnectionFactory
+import com.theucsrocha.model.util.IConnectionFactory
 import com.theucsrocha.model.validator.CompetenciaValidator
 import groovy.json.JsonOutput
+import groovy.sql.Sql
 
 class Server {
     static void main(String[] args) {
@@ -23,15 +26,15 @@ class Server {
 
         try {
 
-            def connectionFactory = ConnectionFactory.create("postgres")
-            def sql = connectionFactory.getConnection()
+            IConnectionFactory connectionFactory = ConnectionFactory.create("postgres")
+            Sql sql = connectionFactory.getConnection()
 
-            def competenciaRepository = new CompetenciaDao(sql)
-            def competenciaValidator = new CompetenciaValidator(competenciaRepository)
+            CompetenciaRepository competenciaRepository = new CompetenciaDao(sql)
+            CompetenciaValidator competenciaValidator = new CompetenciaValidator(competenciaRepository)
 
-            def candidatoService = new CandidatoService(new CandidatoDao(sql), competenciaValidator)
-            def empresaService = new EmpresaService(new EmpresaDao(sql))
-            def vagaService = new VagaService(new VagaDao(sql), competenciaValidator)
+            CandidatoService candidatoService = new CandidatoService(new CandidatoDao(sql), competenciaValidator)
+            EmpresaService empresaService = new EmpresaService(new EmpresaDao(sql))
+            VagaService vagaService = new VagaService(new VagaDao(sql), competenciaValidator)
 
 
             server.createContext("/api/candidatos", new CandidatoController(candidatoService))
@@ -48,7 +51,7 @@ class Server {
     }
 
       static void enviarResposta(HttpExchange exchange, int status, Object data) {
-        def json = JsonOutput.toJson(data)
+        String json = JsonOutput.toJson(data)
         exchange.responseHeaders.add("Content-Type", "application/json")
         exchange.sendResponseHeaders(status, json.getBytes().length)
         exchange.getResponseBody().with {

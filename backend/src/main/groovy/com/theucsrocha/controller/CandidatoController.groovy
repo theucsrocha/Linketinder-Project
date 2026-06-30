@@ -17,7 +17,7 @@ class CandidatoController implements HttpHandler {
     @Override
     void handle(HttpExchange exchange) throws IOException {
         try {
-            def metodo = exchange.requestMethod
+            String metodo = exchange.requestMethod
             if (metodo == "POST") {
                 adicionarCandidato(exchange)
             } else if (metodo == "GET") {
@@ -36,7 +36,7 @@ class CandidatoController implements HttpHandler {
     }
     //Candidato candidato, List<String> competencias
     void adicionarCandidato(HttpExchange exchange) {
-        def corpo = exchange.requestBody.text
+        String corpo = exchange.requestBody.text
         def dados = new JsonSlurper().parseText(corpo)
 
         Candidato novoCandidato = new Candidato(
